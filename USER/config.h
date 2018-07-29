@@ -103,7 +103,7 @@ typedef unsigned long     uint32_t;
 #define TYPE_C_SLEEP																				(uint16_t)0x04					//0.02V
 #define A_SLEEP																							(uint16_t)0x09					//0.045V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V
-#define A2_overcurrent																			(uint16_t)0xDD					//1.07V
+#define A2_overcurrent																			(uint16_t)0xDD					//1.08V
 
 #define Speed_mode																					true
 #define low_speed_mode																			false

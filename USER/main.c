@@ -129,8 +129,10 @@ static void Sleep_task(void)
 	LED4 = false;
 	SEL = false;
 	A_EN = false;
+
 	ADC_OFF_CMD();
 	Tim2_DeInit();
+	delay_ms(1000);
 	asm("sim");                                     //关闭全局中断
 	if(battery.Batter_Low_Pressure != Batter_Low){
 		Key_Interrupt_Enable();
