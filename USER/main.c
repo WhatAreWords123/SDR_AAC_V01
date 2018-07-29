@@ -40,6 +40,10 @@ static void System_Variable_Init(void)
 	battery.Lndicator_light_cnt = false;
 	adc.Adc_gather_cnt = false;
 	adc.Adc_Query=false;
+
+	type_c.C_overcurrent_cnt = false;
+	type_c.ADC_TYPE_C_Voltage = false;
+	qc_detection.QC_Gather_finish = false;
 }
 /**
   * @brief  SClK_Initial() => 初始化系统时钟，系统时钟 = 16MHZ

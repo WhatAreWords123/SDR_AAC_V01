@@ -113,8 +113,8 @@ void Port_monitoring(void)
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
 
-#if 0
-		if(((type_c.ADC_TYPE_C_Voltage <= TYPE_C_SLEEP)||(STAT2 != true))
+#if 1
+		if(((type_c.ADC_TYPE_C_Voltage < TYPE_C_SLEEP)||(STAT2 != true))
 			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)){
 #else
 			if((a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)){
@@ -156,6 +156,13 @@ void Port_monitoring(void)
 					a_detection.A2_overcurrent_cnt = false;
 					system.System_State = System_Sleep;
 				}
+			}
+		}
+
+		if(type_c.ADC_TYPE_C_Voltage > TYPE_C_overcurrent){
+			if(++type_c.C_overcurrent_cnt >= 20){
+				type_c.C_overcurrent_cnt = false;
+				system.System_State = System_Sleep;
 			}
 		}
 	}

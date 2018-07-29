@@ -100,7 +100,8 @@ typedef unsigned long     uint32_t;
 #define TYPE_C_VOLTAGE																			(uint16_t)0x02					//0.01V
 
 #define MAX_VOLTAGE																					(uint16_t)0x270					//3.05V
-#define TYPE_C_SLEEP																				(uint16_t)0x04					//0.02V
+#define TYPE_C_SLEEP																				(uint16_t)0x05					//0.025V
+#define TYPE_C_overcurrent																	(uint16_t)0xD7					//1.05V
 #define A_SLEEP																							(uint16_t)0x09					//0.045V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V
 #define A2_overcurrent																			(uint16_t)0xDD					//1.08V
@@ -167,6 +168,7 @@ typedef struct{
 }_A_Detection;
 
 typedef struct{
+	uint8_t C_overcurrent_cnt;
 	uint16_t ADC_TYPE_C_Voltage;
 }_TYPE_C;
 
