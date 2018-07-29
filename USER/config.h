@@ -57,6 +57,7 @@ typedef unsigned long     uint32_t;
 #define DEBUG												0
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
+#define SLEEP_TIME																					15000							//15000	* 1ms = 15S
 
 #define Discharge_State																			true
 #define Charge_State																				false
@@ -68,8 +69,9 @@ typedef unsigned long     uint32_t;
 #define System_Run                                          true
 
 #define ADC_VB                    													0x06                  //ADC6通道
-#define ADC_QC																							0x03									//ADC3通道
+#define ADC_QC																							0x02									//ADC2通道
 #define ADC_A1_AD																						0x04									//ADC4通道
+#define ADC_A2_AD																						0x03									//ADC3通道
 #define TYPE_AD																							0x05									//ADC5通道
 #if 1
 #define Battery_Level_0                                     (uint16_t)0x1BD          //2.175V
@@ -97,7 +99,11 @@ typedef unsigned long     uint32_t;
 #define Load_Voltage																				(uint16_t)0x0E					//0.06V
 #define TYPE_C_VOLTAGE																			(uint16_t)0x02					//0.01V
 
+#define MAX_VOLTAGE																					(uint16_t)0x270					//3.05V
 #define TYPE_C_SLEEP																				(uint16_t)0x04					//0.02V
+#define A_SLEEP																							(uint16_t)0x09					//0.045V
+#define A1_overcurrent																			(uint16_t)0xB4					//0.88V
+#define A2_overcurrent																			(uint16_t)0xD4					//1.04V
 
 #define Speed_mode																					true
 #define low_speed_mode																			false
@@ -112,6 +118,8 @@ typedef struct{
 	uint8_t System_State;
 	uint8_t NotifyLight_EN;
 	uint8_t Charge_For_Discharge;
+	uint8_t System_sleep_countdown;
+	uint16_t System_sleep_countdown_cnt;
 }_System;
 
 typedef struct{
@@ -121,13 +129,12 @@ typedef struct{
 
 typedef struct{
 	uint8_t Delay_Detection_Battery_full_status;
-	uint8_t Battery_full_time_out;
-	uint8_t Battery_full_locking;
-	uint8_t Battery_State;
-
 	
-	uint8_t Battery_Full_cnt_multiple;
-	uint16_t Battery_Full_cnt;	
+	
+	uint8_t Battery_full_locking;
+	uint8_t Battery_full_time_out;
+	uint8_t Battery_State;
+	uint16_t Battery_Full_Accumulative;	
 
 	uint16_t Discharge_Batter_Low_blink;
 	uint16_t Charge_Batter_Low_blink;
@@ -143,9 +150,37 @@ typedef struct{
 	uint16_t Battery_Compensate;
 }_Battery;
 
+typedef struct{
+	uint8_t Mode;
+	uint8_t QC_Gather_finish;
+	uint16_t ADC_QC_Voltage;
+}_Qc_Detection;
 
-extern _System system;
+typedef struct{
+	uint8_t A1_overcurrent_cnt;
+	uint8_t A2_overcurrent_cnt;
+	uint8_t ADC_A1_Gather_finish;
+	uint8_t ADC_A2_Gather_finish;
+	uint16_t ADC_A1_AD_Voltage;
+	uint16_t ADC_A2_AD_Voltage;
+}_A_Detection;
+
+typedef struct{
+	uint16_t ADC_TYPE_C_Voltage;
+}_TYPE_C;
+
+typedef struct{
+	uint8_t Forced_shutdown;
+	uint8_t Key_Time_cnt;
+	uint8_t time_10ms_ok;
+	uint8_t key;
+}_KEY;
+
 extern _ADC adc;
+extern _KEY key;
+extern _TYPE_C type_c;
+extern _System system;
 extern _Battery battery;
-
+extern _Qc_Detection qc_detection;
+extern _A_Detection a_detection;
 #endif

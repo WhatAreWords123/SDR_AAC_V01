@@ -7,5 +7,5 @@ void Adc_Task(void);
 void ADC_OFF_CMD(void);
 void Battery_Volume(void);
 uint16_t Read_ADC(uint8_t ch);
-
+void Port_monitoring(void);
 #endif

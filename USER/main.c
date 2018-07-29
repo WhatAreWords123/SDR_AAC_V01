@@ -3,10 +3,15 @@
 #include "gpio.h"
 #include "time.h"
 #include "adc.h"
+#include "key.h"
 
-_System system;
 _ADC adc;
+_KEY key;
+_System system;
+_TYPE_C type_c;
 _Battery battery;
+_Qc_Detection qc_detection;
+_A_Detection a_detection;
 
 /**
   * @brief  Configure System_Variable_Init
@@ -16,6 +21,14 @@ _Battery battery;
 static void System_Variable_Init(void)
 {
 	system.System_State = System_Run;
+
+	key.Forced_shutdown = false;
+
+	system.System_sleep_countdown = false;
+	
+	qc_detection.QC_Gather_finish = false;
+	a_detection.ADC_A1_Gather_finish = false;
+	a_detection.ADC_A2_Gather_finish = false;
 }
 /**
   * @brief  SClK_Initial() => 初始化系统时钟，系统时钟 = 16MHZ
@@ -58,8 +71,8 @@ static void Key_Interrupt_Enable(void)
 }
 static void TYPE_C_Interrupt_Enable(void)
 {
-	PC_DDR &= ~0x30;
-	PC_CR2 |= 0x30;
+	PC_DDR &= ~0x20;
+	PC_CR2 |= 0x20;
 	EXTI_CR1 |= 0x30;	
 }
 /**
@@ -96,6 +109,35 @@ static void System_Initial(void)
   * @param  None
   * @retval None
   */
+static void Sleep_task(void)
+{
+	CE = true;
+	LED1 = false;
+	LED2 = false;
+	LED3 = false;
+	LED4 = false;
+	SEL = false;
+	A_EN = false;
+	ADC_OFF_CMD();
+	Tim2_DeInit();
+	asm("sim");                                     //关闭全局中断
+	if(battery.Batter_Low_Pressure != Batter_Low){
+		Key_Interrupt_Enable();
+	}
+	TYPE_C_Interrupt_Enable();
+	asm("rim");                                     //开全局中断 
+  ClockConfig_OFF();                              //关闭所有外设时钟  
+  asm("halt");                                    //进入停机模式
+  ClockConfig_ON();
+	System_Initial();
+	qc_detection.QC_Gather_finish = false;
+	system.NotifyLight_EN = true;
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 void main(void)
 {
 	System_Initial();
@@ -107,10 +149,14 @@ void main(void)
 	while(1){
 		if(system.System_State == System_Run){
 			Charge_For_Discharge_Detection();
+			Key_event();
+			if(key.Forced_shutdown!=true){
 			Adc_Task();
 			Battery_Volume();
+			Port_monitoring();
+			}
 		}else{//system.System_State == System_Sleep
-			
+			Sleep_task();
 		}
 	}
 }

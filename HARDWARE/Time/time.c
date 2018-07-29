@@ -138,6 +138,24 @@ __interrupt void Time2_OVR_IRQHandler(void)
 			}
 		}
 	
+	if((system.System_sleep_countdown == true)&&(system.Charge_For_Discharge == Discharge_State)){
+		if(++system.System_sleep_countdown_cnt >= SLEEP_TIME){
+			system.System_sleep_countdown_cnt = false;
+			system.System_State = System_Sleep;
+			}		
+		}
+	
+	if((battery.Battery_full_time_out == true)&&(battery.Battery_State != Battery_Full)){
+		if(++battery.Battery_Full_Accumulative >= 15000){
+			battery.Battery_Full_Accumulative = false;
+			battery.Battery_full_locking = true;
+			battery.Battery_full_time_out = false;
+			}
+		}
+	if(++key.Key_Time_cnt >= 10){
+		key.Key_Time_cnt = false;
+		key.time_10ms_ok = true;
+		}
 	}
 	TIM2_SR1 = 0x00;         																		//清除更新时间标志位
 }
