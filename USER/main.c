@@ -29,6 +29,17 @@ static void System_Variable_Init(void)
 	qc_detection.QC_Gather_finish = false;
 	a_detection.ADC_A1_Gather_finish = false;
 	a_detection.ADC_A2_Gather_finish = false;
+
+	a_detection.A1_overcurrent_cnt = false;
+	a_detection.A2_overcurrent_cnt = false;
+	a_detection.ADC_A1_AD_Voltage = false;
+	a_detection.ADC_A2_AD_Voltage = false;
+
+	battery.Battery_Full_Accumulative = false;
+	system.System_sleep_countdown_cnt = false;
+	battery.Lndicator_light_cnt = false;
+	adc.Adc_gather_cnt = false;
+	adc.Adc_Query=false;
 }
 /**
   * @brief  SClK_Initial() => 初始化系统时钟，系统时钟 = 16MHZ
@@ -73,7 +84,7 @@ static void TYPE_C_Interrupt_Enable(void)
 {
 	PC_DDR &= ~0x20;
 	PC_CR2 |= 0x20;
-	EXTI_CR1 |= 0x30;	
+	EXTI_CR1 |= 0x10;	
 }
 /**
   * @brief  None
@@ -165,7 +176,7 @@ void main(void)
   * @param  None
   * @retval None
   */
-#pragma vector=EXTI0_vector//0x05
+#pragma vector=EXTI0_vector//0x05  A
 __interrupt void Exti0_OVR_IRQHandler(void){
 //Don't do the action
 }
@@ -174,10 +185,11 @@ __interrupt void Exti0_OVR_IRQHandler(void){
   * @param  None
   * @retval None
   */
-#pragma vector=EXTI2_vector//0x07
+#pragma vector=EXTI2_vector//0x07 C
 __interrupt void Exti2_OVR_IRQHandler(void){
 //Don't do the action
 }
+#if 0
 /**
   * @brief  None
   * @param  None
@@ -187,3 +199,4 @@ __interrupt void Exti2_OVR_IRQHandler(void){
 __interrupt void Exti3_OVR_IRQHandler(void){
 //Don't do the action
 }
+#endif
