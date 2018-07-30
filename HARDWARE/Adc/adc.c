@@ -126,7 +126,8 @@ void Port_monitoring(void)
 			}
 		}
 		if(qc_detection.Mode == Speed_mode){
-			LED4 = true;
+			system.LED_Temporary_Init = LED4_OUT;
+			LED4_Init_Judge();
 			if(a_detection.ADC_A1_AD_Voltage > A1_overcurrent){
 				//A1过流事件
 				if(++a_detection.A1_overcurrent_cnt >= 20){
@@ -142,7 +143,8 @@ void Port_monitoring(void)
 				}
 			}
 		}else{//qc_detection.Mode == low_speed_mode
-			LED4 = false;
+			system.LED_Temporary_Init = LED4_INPUT;
+			LED4_Init_Judge();
 			if(a_detection.ADC_A1_AD_Voltage > A2_overcurrent){
 				//A1过流事件
 				if(++a_detection.A1_overcurrent_cnt >= 20){
@@ -214,7 +216,7 @@ void Battery_Volume(void)
 					if(battery.Battery_voltage >= (Battery_Level_1 + battery.Battery_Compensate))
 						battery.Battery_energy_buf = Quantity_Electricity_25;
 					else{
-						if(battery.Battery_voltage < (Battery_Level_1 + battery.Battery_Compensate))
+						if(battery.Battery_voltage <= (Battery_Level_1 + battery.Battery_Compensate))
 							battery.Battery_energy_buf = Quantity_Electricity_5;
 							else{
 							if(battery.Battery_voltage < Battery_Level_0){

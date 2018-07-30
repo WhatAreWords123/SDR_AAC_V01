@@ -25,6 +25,8 @@ static void System_Variable_Init(void)
 	key.Forced_shutdown = false;
 
 	system.System_sleep_countdown = false;
+	system.LED_Temporary_Init = false;
+	system.LED_Temporary_Init_buf = false;
 	
 	qc_detection.QC_Gather_finish = false;
 	a_detection.ADC_A1_Gather_finish = false;

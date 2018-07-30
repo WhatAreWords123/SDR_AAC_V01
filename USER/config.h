@@ -65,6 +65,9 @@ typedef unsigned long     uint32_t;
 #define Batter_Low																					true
 #define Batter_Normal																				false
 
+#define LED4_OUT																						1
+#define LED4_INPUT																					2
+
 #define System_Sleep                                        false
 #define System_Run                                          true
 
@@ -121,6 +124,9 @@ typedef struct{
 	uint8_t Charge_For_Discharge;
 	uint8_t System_sleep_countdown;
 	uint16_t System_sleep_countdown_cnt;
+
+	uint8_t LED_Temporary_Init;
+	uint8_t LED_Temporary_Init_buf;
 }_System;
 
 typedef struct{

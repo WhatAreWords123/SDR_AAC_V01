@@ -70,6 +70,17 @@ static void Led_sacn(void)
 	}else{//system.Charge_For_Discharge == Charge_State
 		Discharge_sacn_cnt= false;
 		battery.Discharge_Batter_Low_blink = false;
+		LED1=true;
+		LED2=true;
+		LED3=true;
+		switch(Charge_sacn_cnt){
+			case 0: if(battery.Charge_Current_buf == 0)	{LED1=true;		LED2=true;	LED3=true;	}Charge_sacn_cnt++;			break;
+			case 1: if(battery.Charge_Current_buf >= 1)	{LED1=true;		LED2=false;	LED3=false;	}Charge_sacn_cnt++;			break;
+			case 2: if(battery.Charge_Current_buf >= 2)	{LED1=false;	LED2=true;	LED3=true;	}Charge_sacn_cnt++;			break;
+			case 3: if(battery.Charge_Current_buf >= 3)	{LED1=false;	LED2=true;	LED3=false;	}Charge_sacn_cnt++;			break;
+			case 4: if(battery.Charge_Current_buf >= 4)	{LED1=true;		LED2=false;	LED3=true;	}Charge_sacn_cnt=false;			break;
+			default: break;
+		}
 		
 		switch(battery.Current_Display){
 			case Quantity_Electricity_5:
@@ -79,21 +90,11 @@ static void Led_sacn(void)
 			case Quantity_Electricity_100: 	Charge_buf = 4; break;
 			default: break;
 		}
-		
-		if(Charge_buf != buf){
+
+		if(buf != Charge_buf){
 			buf = Charge_buf;
-			battery.Charge_Current_buf = Charge_buf;
+			battery.Charge_Current_buf = buf;
 			Charge_blink_static = false;
-		}
-		
-		switch(Charge_sacn_cnt){
-			case 0: if(battery.Charge_Current_buf == 0)	{LED1=true;		LED2=true;	LED3=true;	}Charge_sacn_cnt++;			break;
-			case 1: if(battery.Charge_Current_buf >= 1)	{LED1=true;		LED2=false;	LED3=false;	}Charge_sacn_cnt++;			break;
-			case 2: if(battery.Charge_Current_buf >= 2)	{LED1=false;	LED2=true;	LED3=true;	}Charge_sacn_cnt++;			break;
-			case 3: if(battery.Charge_Current_buf >= 3)	{LED1=false;	LED2=true;	LED3=false;	}Charge_sacn_cnt++;			break;
-			case 4: if(battery.Charge_Current_buf >= 4)	{LED1=true;		LED2=false;	LED3=true;	}Charge_sacn_cnt++;		break;
-			case 5: if(battery.Charge_Current_buf >= 5)	{LED1=true;		LED2=true;	LED3=true;	}Charge_sacn_cnt=false;	break;
-			default: break;
 		}
 		
 		if(++battery.Charge_Batter_Low_blink >= 250){
@@ -119,7 +120,7 @@ __interrupt void Time2_OVR_IRQHandler(void)
   TIM2_CNTRH = TIME_CNTRH;       															//计数器值   
   TIM2_CNTRL = TIME_CNTRL;       															//计数器值
 	if(system.System_State == System_Run){
-
+		
 		if(system.NotifyLight_EN == true){
 			Led_sacn();
 		}
