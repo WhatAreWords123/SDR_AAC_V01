@@ -44,7 +44,6 @@ static void Led_sacn(void)
 	static uint8_t Charge_buf = false;
 	static uint8_t Charge_blink_static = false;
 	static uint8_t buf = false;
-
 	
 	if(system.Charge_For_Discharge == Discharge_State){
 		Charge_blink_static = false;
@@ -115,6 +114,32 @@ static void Led_sacn(void)
 	}
 }
 /**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void Blink_warning(void)
+{
+	switch(battery.warning_sacn_cnt){
+		case 0: if(battery.Charge_Current_warning == 0)	{LED1=true;		LED2=true;	LED3=true;	}battery.warning_sacn_cnt++;			break;
+		case 1: if(battery.Charge_Current_warning >= 1)	{LED1=true;		LED2=false;	LED3=false;	}battery.warning_sacn_cnt++;			break;
+		case 2: if(battery.Charge_Current_warning >= 2)	{LED1=false;	LED2=true;	LED3=true;	}battery.warning_sacn_cnt++;			break;
+		case 3: if(battery.Charge_Current_warning >= 3)	{LED1=false;	LED2=true;	LED3=false;	}battery.warning_sacn_cnt++;			break;
+		case 4: if(battery.Charge_Current_warning >= 4)	{LED1=true;		LED2=false;	LED3=true;	}battery.warning_sacn_cnt=false;			break;
+		default: break;
+	}
+	if(++battery.Battery_warning_blink_time >= 250){
+		battery.Battery_warning_blink_time = false;
+		if(battery.warning_temp == false){
+			battery.warning_temp = ~battery.warning_temp;
+			battery.Charge_Current_warning = 5;
+		}else{
+			battery.warning_temp = ~battery.warning_temp;
+			battery.Charge_Current_warning = false;
+		}
+	}
+}
+/**
   * @brief  TIM2更新时间中断    中断向量  0x0F
   * @param  None
   * @retval None	
@@ -128,6 +153,10 @@ __interrupt void Time2_OVR_IRQHandler(void)
 		
 		if(system.NotifyLight_EN == true){
 			Led_sacn();
+		}
+
+		if(battery.Battery_warning == WARNING){
+			Blink_warning();
 		}
 		
 	  if(!adc.Flay_Adc_gather){

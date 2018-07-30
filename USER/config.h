@@ -65,6 +65,9 @@ typedef unsigned long     uint32_t;
 #define Batter_Low																					true
 #define Batter_Normal																				false
 
+#define WARNING																							true
+#define NORMAL																							false
+
 #define LED4_OUT																						1
 #define LED4_INPUT																					2
 
@@ -82,6 +85,8 @@ typedef unsigned long     uint32_t;
 #define Battery_Level_2                                     (uint16_t)0x1FA          //2.475V
 #define Battery_Level_3                                     (uint16_t)0x228          //2.700V
 #define Battery_Level_4                                     (uint16_t)0x24D          //2.880V
+
+#define Battery_abnormal																		(uint16_t)0x28F          //3.20V
 #else
 #define Battery_Level_0                                     (uint16_t)0x1BD          //2.175V
 #define Battery_Level_1																			(uint16_t)0x1FA          //2.475V
@@ -136,26 +141,25 @@ typedef struct{
 }_ADC;
 
 typedef struct{
-	uint8_t Delay_Detection_Battery_full_status;
-	
-	
+	uint8_t warning_temp;
+	uint8_t Battery_warning;
+	uint8_t warning_sacn_cnt;
+	uint8_t Battery_warning_blink_time;
 	uint8_t Battery_full_locking;
 	uint8_t Battery_full_time_out;
 	uint8_t Battery_State;
-	uint16_t Battery_Full_Accumulative;	
-
-	uint16_t Discharge_Batter_Low_blink;
-	uint16_t Charge_Batter_Low_blink;
-	
 	uint8_t Charge_Current_buf;
-	
-	uint16_t Lndicator_light_cnt;
+	uint8_t Charge_Current_warning;
 	uint8_t Batter_Low_Pressure;
 	uint8_t Current_Display;
 	uint8_t Battery_energy_buf;
 	uint8_t Battery_Level_Update;
 	uint16_t Battery_voltage;
 	uint16_t Battery_Compensate;
+	uint16_t Lndicator_light_cnt;
+	uint16_t Charge_Batter_Low_blink;
+	uint16_t Battery_Full_Accumulative;	
+	uint16_t Discharge_Batter_Low_blink;	
 }_Battery;
 
 typedef struct{

@@ -36,16 +36,21 @@ static void System_Variable_Init(void)
 	a_detection.A2_overcurrent_cnt = false;
 	a_detection.ADC_A1_AD_Voltage = false;
 	a_detection.ADC_A2_AD_Voltage = false;
-
-	battery.Battery_Full_Accumulative = false;
+	
 	system.System_sleep_countdown_cnt = false;
-	battery.Lndicator_light_cnt = false;
 	adc.Adc_gather_cnt = false;
 	adc.Adc_Query=false;
 
 	type_c.C_overcurrent_cnt = false;
 	type_c.ADC_TYPE_C_Voltage = false;
 	qc_detection.QC_Gather_finish = false;
+
+	battery.warning_temp = false;
+	battery.Lndicator_light_cnt = false;
+	battery.Charge_Current_warning = false;
+	battery.Battery_Full_Accumulative = false;
+	battery.Battery_warning_blink_time = false;
+	
 }
 /**
   * @brief  SClK_Initial() => 初始化系统时钟，系统时钟 = 16MHZ
@@ -150,7 +155,9 @@ static void Sleep_task(void)
   ClockConfig_ON();
 	System_Initial();
 	qc_detection.QC_Gather_finish = false;
-	system.NotifyLight_EN = true;
+	if(battery.Battery_warning == NORMAL){
+		system.NotifyLight_EN = true;
+	}
 }
 /**
   * @brief  None
@@ -162,6 +169,7 @@ void main(void)
 	System_Initial();
 	battery.Current_Display = 6;
 	adc.Flay_Adc_gather = true;
+	battery.Battery_warning = false;
 	delay_ms(150);
 	battery.Battery_Level_Update = true;
 	asm("rim");                                 //开全局中断 
