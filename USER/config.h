@@ -86,7 +86,7 @@ typedef unsigned long     uint32_t;
 #define Battery_Level_3                                     (uint16_t)0x228          //2.700V
 #define Battery_Level_4                                     (uint16_t)0x24D          //2.880V
 #else
-#define Battery_Level_0                                     (uint16_t)0x1BD          //2.175V
+#define Battery_Level_0                                     (uint16_t)0x133          //2.150V
 #define Battery_Level_1																			(uint16_t)0x1CC          //2.250V
 #define Battery_Level_2                                     (uint16_t)0x1FD          //2.475V
 #define Battery_Level_3                                     (uint16_t)0x21A          //2.700V
