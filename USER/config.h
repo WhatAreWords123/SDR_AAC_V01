@@ -57,7 +57,7 @@ typedef unsigned long     uint32_t;
 #define DEBUG												0
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
-#define SLEEP_TIME																					15000							//15000	* 1ms = 15S
+#define SLEEP_TIME																					30000							//15000	* 1ms = 15S
 
 #define Discharge_State																			true
 #define Charge_State																				false
@@ -79,20 +79,26 @@ typedef unsigned long     uint32_t;
 #define ADC_A1_AD																						0x04									//ADC4通道
 #define ADC_A2_AD																						0x03									//ADC3通道
 #define TYPE_AD																							0x05									//ADC5通道
-#if 1
+#if 0
 #define Battery_Level_0                                     (uint16_t)0x1BD          //2.175V
 #define Battery_Level_1																			(uint16_t)0x1CC          //2.250V
 #define Battery_Level_2                                     (uint16_t)0x1FA          //2.475V
 #define Battery_Level_3                                     (uint16_t)0x228          //2.700V
 #define Battery_Level_4                                     (uint16_t)0x24D          //2.880V
-
-#define Battery_abnormal																		(uint16_t)0x28F          //3.20V
 #else
 #define Battery_Level_0                                     (uint16_t)0x1BD          //2.175V
-#define Battery_Level_1																			(uint16_t)0x1FA          //2.475V
-#define Battery_Level_2                                     (uint16_t)0x228          //2.700V
-#define Battery_Level_3                                     (uint16_t)0x24D          //2.880V
+#define Battery_Level_1																			(uint16_t)0x1CC          //2.250V
+#define Battery_Level_2                                     (uint16_t)0x1FD          //2.475V
+#define Battery_Level_3                                     (uint16_t)0x21A          //2.700V
+#define Battery_Level_4                                     (uint16_t)0x239          //2.880V
 #endif
+#define Battery_charge_Level_4															(uint16_t)0x270          //3.050V
+#define Battery_charge_Level_3															(uint16_t)0x259          //2.935V
+#define Battery_charge_Level_2															(uint16_t)0x23D          //2.80V
+#define Battery_charge_Level_1															(uint16_t)0x1CC          //2.250V
+
+#define Battery_abnormal																		(uint16_t)0x28F          //3.20V
+
 #define Quantity_Electricity_100														5
 #define Quantity_Electricity_75															4
 #define Quantity_Electricity_50															3

@@ -114,12 +114,8 @@ void Port_monitoring(void)
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
 
-#if 1
 		if(((type_c.ADC_TYPE_C_Voltage < TYPE_C_SLEEP)||(STAT2 != true))
-			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)){
-#else
-			if((a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)){
-#endif
+			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)&&(system.Charge_For_Discharge == Discharge_State)){
 				system.System_sleep_countdown = true;
 			}else{
 				system.System_sleep_countdown = false;
@@ -205,49 +201,61 @@ void Battery_Volume(void)
 			battery.Battery_Compensate = (uint16_t)0x0A;//Charge Compensate	0.05V
 	}
 	if(battery.Battery_Level_Update == true){
-		if(battery.Battery_voltage <= Battery_abnormal){
+		if((battery.Battery_voltage <= Battery_abnormal)&&(system.Charge_For_Discharge == Discharge_State)){
 			battery.Battery_warning = NORMAL;
-			if(battery.Battery_voltage >= (Battery_Level_4 + battery.Battery_Compensate))
+			if(battery.Battery_voltage >= Battery_Level_4)
 				battery.Battery_energy_buf = Quantity_Electricity_100;
 			else{
-				if(battery.Battery_voltage >= (Battery_Level_3 + battery.Battery_Compensate))
+				if(battery.Battery_voltage >= Battery_Level_3)
 					battery.Battery_energy_buf = Quantity_Electricity_75;
 				else{
-					if(battery.Battery_voltage >= (Battery_Level_2 + battery.Battery_Compensate))
+					if(battery.Battery_voltage >= Battery_Level_2)
 						battery.Battery_energy_buf = Quantity_Electricity_50;
 					else{
-						if(battery.Battery_voltage >= (Battery_Level_1 + battery.Battery_Compensate))
+						if(battery.Battery_voltage >= Battery_Level_1)
 							battery.Battery_energy_buf = Quantity_Electricity_25;
 						else{
-							if(battery.Battery_voltage <= (Battery_Level_1 + battery.Battery_Compensate))
 								battery.Battery_energy_buf = Quantity_Electricity_5;
-								else{
 								if(battery.Battery_voltage < Battery_Level_0){
 									if(system.Charge_For_Discharge == Discharge_State)
 										battery.Batter_Low_Pressure = Batter_Low;
 										system.System_State = System_Sleep;
-								}
 							}
 						}
 					}
 				}
 			}
-			if(system.Charge_For_Discharge == Charge_State){
-				if(battery.Battery_energy_buf >= battery.Current_Display){
-					battery.Current_Display = battery.Battery_energy_buf;
-					system.NotifyLight_EN = true;
+			if(battery.Battery_energy_buf	< battery.Current_Display){
+				battery.Current_Display = battery.Battery_energy_buf;
+				system.NotifyLight_EN = true;
+			}
+		}
+		else if(system.Charge_For_Discharge == Charge_State){
+			if(battery.Battery_voltage >= Battery_charge_Level_4)
+				battery.Battery_energy_buf = Quantity_Electricity_100;
+			else{
+				if(battery.Battery_voltage >= Battery_charge_Level_3)
+					battery.Battery_energy_buf = Quantity_Electricity_75;
+				else{
+					if(battery.Battery_voltage >= Battery_charge_Level_2)
+						battery.Battery_energy_buf = Quantity_Electricity_50;
+					else{
+						if(battery.Battery_voltage >= Battery_charge_Level_1)
+							battery.Battery_energy_buf = Quantity_Electricity_25;
+						else{
+								battery.Battery_energy_buf = Quantity_Electricity_5;
+						}
+					}
 				}
 			}
-			else{//system.Charge_For_Discharge == Discharge_State
-				if(battery.Battery_energy_buf	< battery.Current_Display){
-					battery.Current_Display = battery.Battery_energy_buf;
-					system.NotifyLight_EN = true;
-				}
+			if(battery.Battery_energy_buf >= battery.Current_Display){
+				battery.Current_Display = battery.Battery_energy_buf;
+				system.NotifyLight_EN = true;
 			}
-			battery.Battery_Level_Update = false;
 		}else{
 			battery.Battery_warning = WARNING;
 			system.NotifyLight_EN = false;
 		}
+		battery.Battery_Level_Update = false;
 	}
 }

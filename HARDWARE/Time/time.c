@@ -167,7 +167,7 @@ __interrupt void Time2_OVR_IRQHandler(void)
 	  }
 		
 	if(!battery.Battery_Level_Update){
-		if(++battery.Lndicator_light_cnt >= 1000){
+		if(++battery.Lndicator_light_cnt >= 15000){
 			battery.Lndicator_light_cnt = false;
 			battery.Battery_Level_Update = true;
 			}
