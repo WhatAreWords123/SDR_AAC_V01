@@ -99,6 +99,88 @@ static void Fast_slow_charge_discharge_judge(void)
   * @param  None
   * @retval None
   */
+void TYPE_C_sleep_filter(void)
+{
+	if(type_c.ADC_TYPE_C_Voltage > TYPE_C_SLEEP){
+		type_c.Load_cnt++;
+	}
+#if 0
+	if(type_c.ADC_TYPE_C_Voltage < TYPE_C_SLEEP){
+#else
+	else{
+#endif
+		type_c.No_load_cnt++;	
+	}
+	if(type_c.No_load_cnt >= 500){
+		type_c.Sleep_flay = true;
+		type_c.No_load_cnt = false;
+	}
+	if(type_c.Load_cnt >= 200){
+		type_c.Sleep_flay = false;
+		type_c.Load_cnt = false;
+	}
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void A1_sleep_filter(void)
+{
+	if(a_detection.ADC_A1_AD_Voltage > A_load){
+		a_detection.A1_Load_cnt++;
+	}
+#if 0
+	if(a_detection.ADC_A1_AD_Voltage < A_SLEEP){
+#else
+	else{
+#endif
+		a_detection.A1_No_load_cnt++;
+	}
+
+	if(a_detection.A1_No_load_cnt >= 500){
+		a_detection.A1_Sleep_flay = true;
+		a_detection.A1_No_load_cnt = false;
+	}
+	if(a_detection.A1_Load_cnt >= 200){
+		a_detection.A1_Sleep_flay = false;
+		a_detection.A1_Load_cnt = false;
+		a_detection.A1_No_load_cnt = false;
+	}
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void A2_sleep_filter(void)
+{
+
+	if(a_detection.ADC_A2_AD_Voltage > A_load){
+		a_detection.A2_Load_cnt++;
+	}
+#if 0
+	else if(a_detection.ADC_A2_AD_Voltage < A_SLEEP){
+#else
+	else{
+#endif
+		a_detection.A2_No_load_cnt++;	
+	}
+	
+	if(a_detection.A2_No_load_cnt >= 200){
+		a_detection.A2_Sleep_flay = true;
+		a_detection.A2_No_load_cnt = false;
+	}
+	if(a_detection.A2_Load_cnt >= 500){
+		a_detection.A2_Sleep_flay = false;
+		a_detection.A2_Load_cnt = false;
+	}
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 void Port_monitoring(void)
 {
 	if(system.Charge_For_Discharge == Charge_State){
@@ -113,10 +195,13 @@ void Port_monitoring(void)
 	}else{//system.Charge_For_Discharge == Discharge_State
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
-
-		if(((type_c.ADC_TYPE_C_Voltage < TYPE_C_SLEEP)||(STAT2 != true))
-			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)&&(system.Charge_For_Discharge == Discharge_State)){
-				system.System_sleep_countdown = true;
+#if 1
+		if(((type_c.Sleep_flay == true)||(STAT2 != true))
+			&&(a_detection.A1_Sleep_flay == true)&&(a_detection.A2_Sleep_flay == true)&&(system.Charge_For_Discharge == Discharge_State)){
+#else
+		if((a_detection.A2_Sleep_flay == true)&&(system.Charge_For_Discharge == Discharge_State)){
+#endif
+				system.System_sleep_countdown = true;				
 			}else{
 				system.System_sleep_countdown = false;
 				system.System_sleep_countdown_cnt = false;
@@ -179,9 +264,9 @@ void Adc_Task(void)
 		{
       case 0: battery.Battery_voltage = Read_ADC(ADC_VB); adc.Adc_Query++; break;
 			case 1: qc_detection.ADC_QC_Voltage = Read_ADC(ADC_QC); Fast_slow_charge_discharge_judge(); adc.Adc_Query++; break;
-			case 2: a_detection.ADC_A1_AD_Voltage = Read_ADC(ADC_A1_AD); a_detection.ADC_A1_Gather_finish = true; adc.Adc_Query++; break;
-			case 3: a_detection.ADC_A2_AD_Voltage = Read_ADC(ADC_A2_AD); a_detection.ADC_A2_Gather_finish = true;	adc.Adc_Query++; break;
-			case 4:	if(STAT2 == true){type_c.ADC_TYPE_C_Voltage = Read_ADC(TYPE_AD);} adc.Adc_Query=false; break;
+			case 2: a_detection.ADC_A1_AD_Voltage = Read_ADC(ADC_A1_AD); a_detection.ADC_A1_Gather_finish = true; A1_sleep_filter(); adc.Adc_Query++; break;
+			case 3: a_detection.ADC_A2_AD_Voltage = Read_ADC(ADC_A2_AD); a_detection.ADC_A2_Gather_finish = true;	A2_sleep_filter(); adc.Adc_Query++; break;
+			case 4:	if(STAT2 == true){type_c.ADC_TYPE_C_Voltage = Read_ADC(TYPE_AD);} TYPE_C_sleep_filter(); adc.Adc_Query=false; break;
 			default:break;
     }
 		adc.Flay_Adc_gather = false;

@@ -31,18 +31,33 @@ static void System_Variable_Init(void)
 	qc_detection.QC_Gather_finish = false;
 	a_detection.ADC_A1_Gather_finish = false;
 	a_detection.ADC_A2_Gather_finish = false;
-
+	
 	a_detection.A1_overcurrent_cnt = false;
 	a_detection.A2_overcurrent_cnt = false;
 	a_detection.ADC_A1_AD_Voltage = false;
 	a_detection.ADC_A2_AD_Voltage = false;
+
+	a_detection.A1_No_load_cnt = false;
+	a_detection.A1_Load_cnt = false;
+	a_detection.A1_Sleep_flay = false;
+
+	a_detection.A2_Load_cnt = false;
+	a_detection.A2_Sleep_flay = false;
+	a_detection.A2_No_load_cnt = false;
 	
 	system.System_sleep_countdown_cnt = false;
 	adc.Adc_gather_cnt = false;
 	adc.Adc_Query=false;
 
+	type_c.Load_cnt = false;
+	type_c.Sleep_flay = false;
+	type_c.No_load_cnt = false;
 	type_c.C_overcurrent_cnt = false;
 	type_c.ADC_TYPE_C_Voltage = false;
+	
+	
+
+	
 	qc_detection.QC_Gather_finish = false;
 
 	battery.warning_temp = false;

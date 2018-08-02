@@ -57,7 +57,7 @@ typedef unsigned long     uint32_t;
 #define DEBUG												0
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
-#define SLEEP_TIME																					30000							//15000	* 1ms = 15S
+#define SLEEP_TIME																					10000							//15000	* 1ms = 15S
 
 #define Discharge_State																			true
 #define Charge_State																				false
@@ -115,8 +115,10 @@ typedef unsigned long     uint32_t;
 
 #define MAX_VOLTAGE																					(uint16_t)0x270					//3.05V
 #define TYPE_C_SLEEP																				(uint16_t)0x05					//0.025V
+#define TYPE_C_load																					(uint16_t)0x0A					//0.05V
 #define TYPE_C_overcurrent																	(uint16_t)0xD7					//1.05V
 #define A_SLEEP																							(uint16_t)0x09					//0.045V
+#define A_load																							(uint16_t)0x04					//0.100V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V
 #define A2_overcurrent																			(uint16_t)0xDD					//1.08V
 
@@ -175,16 +177,25 @@ typedef struct{
 }_Qc_Detection;
 
 typedef struct{
+	uint8_t A1_Sleep_flay;
+	uint8_t A2_Sleep_flay;
 	uint8_t A1_overcurrent_cnt;
 	uint8_t A2_overcurrent_cnt;
 	uint8_t ADC_A1_Gather_finish;
 	uint8_t ADC_A2_Gather_finish;
+	uint16_t A1_No_load_cnt;
+	uint16_t A1_Load_cnt;
+	uint16_t A2_No_load_cnt;
+	uint16_t A2_Load_cnt;
 	uint16_t ADC_A1_AD_Voltage;
 	uint16_t ADC_A2_AD_Voltage;
 }_A_Detection;
 
 typedef struct{
+	uint8_t Sleep_flay;
 	uint8_t C_overcurrent_cnt;
+	uint16_t No_load_cnt;
+	uint16_t Load_cnt;
 	uint16_t ADC_TYPE_C_Voltage;
 }_TYPE_C;
 
