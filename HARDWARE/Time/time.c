@@ -139,6 +139,18 @@ void Blink_warning(void)
 		}
 	}
 }
+void TEST(void)
+{
+	static uint8_t Discharge_sacn_cnt = false;
+
+	switch(Discharge_sacn_cnt){
+		case 0: if(battery.Current_Display >= Quantity_Electricity_25)	{LED1=true;		LED2=false;	LED3=false;	}Discharge_sacn_cnt++;		break;
+		case 1: if(battery.Current_Display >= Quantity_Electricity_50)	{LED1=false;	LED2=true;	LED3=true;	}Discharge_sacn_cnt++;		break;
+		case 2: if(battery.Current_Display >= Quantity_Electricity_75)	{LED1=false;	LED2=true;	LED3=false;	}Discharge_sacn_cnt++;		break;
+		case 3: if(battery.Current_Display >= Quantity_Electricity_100)	{LED1=true;		LED2=false;	LED3=true;	}Discharge_sacn_cnt=false;break;
+		default: break;
+	}
+}
 /**
   * @brief  TIM2更新时间中断    中断向量  0x0F
   * @param  None
@@ -149,6 +161,7 @@ __interrupt void Time2_OVR_IRQHandler(void)
 {
   TIM2_CNTRH = TIME_CNTRH;       															//计数器值   
   TIM2_CNTRL = TIME_CNTRL;       															//计数器值
+#if 1
 	if(system.System_State == System_Run){
 		
 		if(system.NotifyLight_EN == true){
@@ -192,5 +205,8 @@ __interrupt void Time2_OVR_IRQHandler(void)
 		key.time_10ms_ok = true;
 		}
 	}
+#else
+	TEST();
+#endif
 	TIM2_SR1 = 0x00;         																		//清除更新时间标志位
 }

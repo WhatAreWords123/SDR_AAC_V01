@@ -54,7 +54,7 @@ typedef unsigned long     uint32_t;
 
 #define ADC_Over                    0x80                  //ADC×ª»»½áÊø
 
-#define DEBUG												0
+#define BATTER_WARNING							0
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
 #define SLEEP_TIME																					10000							//15000	* 1ms = 15S

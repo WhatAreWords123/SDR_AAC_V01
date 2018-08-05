@@ -4,6 +4,7 @@
 #include "time.h"
 #include "adc.h"
 #include "key.h"
+#include "iwdg.h"
 
 _ADC adc;
 _KEY key;
@@ -54,9 +55,6 @@ static void System_Variable_Init(void)
 	type_c.No_load_cnt = false;
 	type_c.C_overcurrent_cnt = false;
 	type_c.ADC_TYPE_C_Voltage = false;
-	
-	
-
 	
 	qc_detection.QC_Gather_finish = false;
 
@@ -155,7 +153,7 @@ static void Sleep_task(void)
 	LED4 = false;
 	SEL = false;
 	A_EN = false;
-
+	
 	ADC_OFF_CMD();
 	Tim2_DeInit();
 	delay_ms(1000);
@@ -186,9 +184,12 @@ void main(void)
 	adc.Flay_Adc_gather = true;
 	battery.Battery_warning = false;
 	delay_ms(150);
+	System_WWDG_Init(COUNTER_INIT,WINDOW_VALUE);
+	battery.Current_Display = Quantity_Electricity_100;
 	battery.Battery_Level_Update = true;
 	asm("rim");                                 //开全局中断 
 	while(1){
+#if 1
 		if(system.System_State == System_Run){
 			Charge_For_Discharge_Detection();
 			Key_event();
@@ -197,9 +198,14 @@ void main(void)
 			Battery_Volume();
 			Port_monitoring();
 			}
+			WWDG_SetCounter();
 		}else{//system.System_State == System_Sleep
 			Sleep_task();
 		}
+#else
+		WWDG_SetCounter();
+		delay_ms(20);
+#endif
 	}
 }
 /**

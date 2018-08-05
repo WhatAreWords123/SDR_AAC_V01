@@ -195,7 +195,7 @@ void Port_monitoring(void)
 	}else{//system.Charge_For_Discharge == Discharge_State
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
-#if 1
+#if 0
 		if(((type_c.Sleep_flay == true)||(STAT2 != true))
 			&&(a_detection.A1_Sleep_flay == true)&&(a_detection.A2_Sleep_flay == true)&&(system.Charge_For_Discharge == Discharge_State)){
 #else
@@ -286,7 +286,11 @@ void Battery_Volume(void)
 			battery.Battery_Compensate = (uint16_t)0x0A;//Charge Compensate	0.05V
 	}
 	if(battery.Battery_Level_Update == true){
+#if BATTER_WARNING
 		if((battery.Battery_voltage <= Battery_abnormal)&&(system.Charge_For_Discharge == Discharge_State)){
+#else
+		if(system.Charge_For_Discharge == Discharge_State){
+#endif
 			battery.Battery_warning = NORMAL;
 			if(battery.Battery_voltage >= Battery_Level_4)
 				battery.Battery_energy_buf = Quantity_Electricity_100;
