@@ -2,7 +2,7 @@
 #define __IWDG_H_
 #include "config.h"
 
-#define WINDOW_VALUE											0x4D
+#define WINDOW_VALUE											0x42
 #define COUNTER_INIT       								0x7F
 
 #define BIT_MASK													((uint8_t)0x7F)
@@ -11,7 +11,7 @@
 #define WWDG_WR_RESET_VALUE								((uint8_t)0x7F) /*!< T bits mask */
 
 void System_WWDG_Init(uint8_t Counter,uint8_t WindowValue);
-void System_WWDG_Disable(void);
+void System_WWDG_Disable(uint8_t Counter,uint8_t WindowValue);
 void WWDG_SetCounter(void);
 
 #endif

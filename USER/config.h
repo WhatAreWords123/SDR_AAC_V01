@@ -54,7 +54,7 @@ typedef unsigned long     uint32_t;
 
 #define ADC_Over                    0x80                  //ADC×ª»»½áÊø
 
-#define BATTER_WARNING							0
+#define BATTER_WARNING							1
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
 #define SLEEP_TIME																					10000							//15000	* 1ms = 15S
@@ -132,6 +132,9 @@ typedef unsigned long     uint32_t;
 #define A1_IDLE_STATE																				false
 
 typedef struct{
+	uint8_t Hardware_Sleep;
+	uint16_t Hardware_Sleep_dowm_cnt;
+	
 	uint8_t System_State;
 	uint8_t NotifyLight_EN;
 	uint8_t Charge_For_Discharge;

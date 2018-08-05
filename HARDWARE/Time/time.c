@@ -164,6 +164,9 @@ __interrupt void Time2_OVR_IRQHandler(void)
 #if 1
 	if(system.System_State == System_Run){
 		
+		system.Hardware_Sleep = false;
+		system.Hardware_Sleep_dowm_cnt = false;
+		
 		if(system.NotifyLight_EN == true){
 			Led_sacn();
 		}
@@ -203,6 +206,11 @@ __interrupt void Time2_OVR_IRQHandler(void)
 	if(++key.Key_Time_cnt >= 10){
 		key.Key_Time_cnt = false;
 		key.time_10ms_ok = true;
+		}
+	}else{
+		if(++system.Hardware_Sleep_dowm_cnt >= 1000){
+			system.Hardware_Sleep_dowm_cnt = false;
+			system.Hardware_Sleep = true;
 		}
 	}
 #else

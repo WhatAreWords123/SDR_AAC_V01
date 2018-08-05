@@ -28,6 +28,9 @@ static void System_Variable_Init(void)
 	system.System_sleep_countdown = false;
 	system.LED_Temporary_Init = false;
 	system.LED_Temporary_Init_buf = false;
+
+	system.Hardware_Sleep = false;
+	system.Hardware_Sleep_dowm_cnt = false;
 	
 	qc_detection.QC_Gather_finish = false;
 	a_detection.ADC_A1_Gather_finish = false;
@@ -153,23 +156,25 @@ static void Sleep_task(void)
 	LED4 = false;
 	SEL = false;
 	A_EN = false;
-	
-	ADC_OFF_CMD();
-	Tim2_DeInit();
-	delay_ms(1000);
-	asm("sim");                                     //关闭全局中断
-	if(battery.Batter_Low_Pressure != Batter_Low){
-		Key_Interrupt_Enable();
-	}
-	TYPE_C_Interrupt_Enable();
-	asm("rim");                                     //开全局中断 
-  ClockConfig_OFF();                              //关闭所有外设时钟  
-  asm("halt");                                    //进入停机模式
-  ClockConfig_ON();
-	System_Initial();
-	qc_detection.QC_Gather_finish = false;
-	if(battery.Battery_warning == NORMAL){
-		system.NotifyLight_EN = true;
+	WWDG_SetCounter();
+	if(system.Hardware_Sleep == true){
+		ADC_OFF_CMD();
+		Tim2_DeInit();
+		asm("sim");                                     //关闭全局中断
+		if(battery.Batter_Low_Pressure != Batter_Low){
+			Key_Interrupt_Enable();
+		}
+		TYPE_C_Interrupt_Enable();
+		asm("rim");                                     //开全局中断 
+		System_WWDG_Disable(COUNTER_INIT,WINDOW_VALUE);
+	  ClockConfig_OFF();                              //关闭所有外设时钟  
+	  asm("halt");                                    //进入停机模式
+	  ClockConfig_ON();
+		System_Initial();
+		qc_detection.QC_Gather_finish = false;
+		if(battery.Battery_warning == NORMAL){
+			system.NotifyLight_EN = true;
+		}
 	}
 }
 /**

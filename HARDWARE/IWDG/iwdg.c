@@ -9,16 +9,18 @@ void System_WWDG_Init(uint8_t Counter,uint8_t WindowValue)
 {
 	WWDG_WR = WWDG_WR_RESET_VALUE;
 	WWDG_CR = (uint8_t)((uint8_t)(WWDG_CR_WDGA_DATE | WWDG_CR_T6_DATE) | (uint8_t)Counter);
-	WWDG_WR = (uint8_t)((uint8_t)(~WWDG_CR_WDGA_DATE) & (uint8_t)(WWDG_CR_T6_DATE | WindowValue));
+	WWDG_WR = (uint8_t)((uint8_t)(~WWDG_CR_WDGA_DATE) & (WWDG_CR_T6_DATE | WindowValue));
 }
 /**
   * @brief  None
   * @param  None
   * @retval None
   */
-void System_WWDG_Disable(void)
+void System_WWDG_Disable(uint8_t Counter,uint8_t WindowValue)
 {
-
+	WWDG_WR = WWDG_WR_RESET_VALUE;
+	WWDG_CR = (uint8_t)((uint8_t)(~WWDG_CR_WDGA_DATE) & WWDG_CR_T6_DATE | (uint8_t)Counter);
+	WWDG_WR = (uint8_t)((uint8_t)(~WWDG_CR_WDGA_DATE) & (WWDG_CR_T6_DATE | WindowValue));
 }
 /**
   * @brief  None

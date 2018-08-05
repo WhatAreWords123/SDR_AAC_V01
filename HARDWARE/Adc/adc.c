@@ -199,7 +199,8 @@ void Port_monitoring(void)
 		if(((type_c.Sleep_flay == true)||(STAT2 != true))
 			&&(a_detection.A1_Sleep_flay == true)&&(a_detection.A2_Sleep_flay == true)&&(system.Charge_For_Discharge == Discharge_State)){
 #else
-		if((a_detection.A2_Sleep_flay == true)&&(system.Charge_For_Discharge == Discharge_State)){
+		if(((type_c.ADC_TYPE_C_Voltage < TYPE_C_SLEEP)||(STAT2 != true))
+			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)&&(system.Charge_For_Discharge == Discharge_State)){
 #endif
 				system.System_sleep_countdown = true;				
 			}else{
