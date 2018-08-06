@@ -316,7 +316,7 @@ void Battery_Volume(void)
 					}
 				}
 			}
-			if(battery.Battery_energy_buf	< battery.Current_Display){
+			if(battery.Battery_energy_buf	<= battery.Current_Display){
 				battery.Current_Display = battery.Battery_energy_buf;
 				system.NotifyLight_EN = true;
 			}
