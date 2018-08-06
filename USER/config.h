@@ -57,7 +57,7 @@ typedef unsigned long     uint32_t;
 #define BATTER_WARNING							1
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
-#define SLEEP_TIME																					10000							//15000	* 1ms = 15S
+#define SLEEP_TIME																					30000							//15000	* 1ms = 15S
 
 #define Discharge_State																			true
 #define Charge_State																				false
