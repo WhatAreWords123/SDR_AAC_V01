@@ -160,6 +160,7 @@ static void Sleep_task(void)
 	if(system.Hardware_Sleep == true){
 		ADC_OFF_CMD();
 		Tim2_DeInit();
+		SLEEP:
 		asm("sim");                                     //关闭全局中断
 		if(battery.Batter_Low_Pressure != Batter_Low){
 			Key_Interrupt_Enable();
@@ -170,6 +171,11 @@ static void Sleep_task(void)
 	  ClockConfig_OFF();                              //关闭所有外设时钟  
 	  asm("halt");                                    //进入停机模式
 	  ClockConfig_ON();
+		if(battery.Batter_Low_Pressure == Batter_Low){
+			if((STAT2 == true) && (C_DIR != false)){
+				goto SLEEP;
+			}
+		}
 		System_Initial();
 		qc_detection.QC_Gather_finish = false;
 		if(battery.Battery_warning == NORMAL){
