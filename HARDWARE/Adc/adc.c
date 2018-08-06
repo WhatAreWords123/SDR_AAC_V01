@@ -184,13 +184,6 @@ void A2_sleep_filter(void)
 void Port_monitoring(void)
 {
 	if(system.Charge_For_Discharge == Charge_State){
-		if(qc_detection.Mode == Speed_mode){
-			system.LED_Temporary_Init = LED4_OUT;
-			LED4_Init_Judge();
-		}else{
-			system.LED_Temporary_Init = LED4_INPUT;
-			LED4_Init_Judge();
-		}
 		if((battery.Battery_voltage > MAX_VOLTAGE) && (PG == true)){
 			battery.Battery_full_time_out = true;
 			if(battery.Battery_full_locking == true){
@@ -339,7 +332,7 @@ void Battery_Volume(void)
 					}
 				}
 			}
-			if(battery.Battery_energy_buf > battery.Current_Display){
+			if(battery.Battery_energy_buf >= battery.Current_Display){
 				battery.Current_Display = battery.Battery_energy_buf;
 				system.NotifyLight_EN = true;
 			}
