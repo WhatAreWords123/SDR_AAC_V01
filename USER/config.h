@@ -86,7 +86,7 @@ typedef unsigned long     uint32_t;
 #define Battery_Level_3                                     (uint16_t)0x228          //2.700V
 #define Battery_Level_4                                     (uint16_t)0x24D          //2.880V
 #else
-#define Battery_Level_0                                     (uint16_t)0x133          //2.150V
+#define Battery_Level_0                                     (uint16_t)0x1BD          //2.175V
 #define Battery_Level_1																			(uint16_t)0x1CC          //2.250V
 #define Battery_Level_2                                     (uint16_t)0x1FD          //2.475V
 #define Battery_Level_3                                     (uint16_t)0x21A          //2.700V
@@ -113,7 +113,7 @@ typedef unsigned long     uint32_t;
 #define Load_Voltage																				(uint16_t)0x0E					//0.06V
 #define TYPE_C_VOLTAGE																			(uint16_t)0x02					//0.01V
 
-#define MAX_VOLTAGE																					(uint16_t)0x270					//3.05V
+#define MAX_VOLTAGE																					(uint16_t)0x25C					//2.950V
 #define TYPE_C_SLEEP																				(uint16_t)0x05					//0.025V
 #define TYPE_C_load																					(uint16_t)0x0A					//0.05V
 #define TYPE_C_overcurrent																	(uint16_t)0xD7					//1.05V
@@ -166,7 +166,6 @@ typedef struct{
 	uint8_t Battery_energy_buf;
 	uint8_t Battery_Level_Update;
 	uint16_t Battery_voltage;
-	uint16_t Battery_Compensate;
 	uint16_t Lndicator_light_cnt;
 	uint16_t Charge_Batter_Low_blink;
 	uint16_t Battery_Full_Accumulative;	

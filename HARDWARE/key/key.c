@@ -75,8 +75,10 @@ void Key_event(void)
 		key.time_10ms_ok = 0; //清除计时10MS标志
 		key.key = key_read(); //调用扫描按键程序，返回一个键值
 		if (key.key == L_key){
-			key.Forced_shutdown = true;
-			system.System_State = System_Sleep;
+			if(system.Charge_For_Discharge == Discharge_State){
+				key.Forced_shutdown = true;
+				system.System_State = System_Sleep;
+			}
 		}else if(key.key == D_key){
 		}else if(key.key == S_key){ 
 		}		
