@@ -302,8 +302,11 @@ void Battery_Volume(void)
 								battery.Battery_energy_buf = Quantity_Electricity_5;
 								if(battery.Battery_voltage < Battery_Level_0){
 									if(system.Charge_For_Discharge == Discharge_State)
-										battery.Batter_Low_Pressure = Batter_Low;
-										system.System_State = System_Sleep;
+										if(++battery.Batter_Low_cnt >= 20000){
+											battery.Batter_Low_cnt = false;
+											battery.Batter_Low_Pressure = Batter_Low;
+											system.System_State = System_Sleep;
+										}
 							}
 						}
 					}
@@ -312,9 +315,11 @@ void Battery_Volume(void)
 			if(battery.Battery_energy_buf	<= battery.Current_Display){
 				battery.Current_Display = battery.Battery_energy_buf;
 				system.NotifyLight_EN = true;
+				battery.Batter_Low_cnt = false;
 			}
 		}
 		else if(system.Charge_For_Discharge == Charge_State){
+			battery.Batter_Low_cnt = false;
 			if(battery.Battery_voltage >= Battery_charge_Level_4)
 				battery.Battery_energy_buf = Quantity_Electricity_100;
 			else{

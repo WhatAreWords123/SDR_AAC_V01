@@ -165,6 +165,7 @@ typedef struct{
 	uint8_t Current_Display;
 	uint8_t Battery_energy_buf;
 	uint8_t Battery_Level_Update;
+	uint16_t Batter_Low_cnt;
 	uint16_t Battery_voltage;
 	uint16_t Lndicator_light_cnt;
 	uint16_t Charge_Batter_Low_blink;

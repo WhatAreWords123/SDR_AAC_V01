@@ -66,6 +66,8 @@ static void System_Variable_Init(void)
 	battery.Charge_Current_warning = false;
 	battery.Battery_Full_Accumulative = false;
 	battery.Battery_warning_blink_time = false;
+
+	battery.Batter_Low_cnt = false;
 	
 }
 /**
