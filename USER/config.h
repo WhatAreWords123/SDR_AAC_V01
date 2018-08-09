@@ -119,7 +119,7 @@ typedef unsigned long     uint32_t;
 #define A_load																							(uint16_t)0x04					//0.100V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V
 #define A2_overcurrent																			(uint16_t)0xDD					//1.08V
-#define A1_overcurrent_low_speed														(uint16_t)0x10A					//1.3V
+#define A1_overcurrent_low_speed														(uint16_t)0x10E					//1.32V
 
 
 #define Speed_mode																					true
