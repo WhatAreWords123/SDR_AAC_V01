@@ -49,6 +49,7 @@ static void Led_sacn(void)
 		Charge_blink_static = false;
 		Charge_sacn_cnt= false;
 		buf = false;
+		Charge_buf = false;
 		battery.Charge_Batter_Low_blink = false;
 		battery.Charge_Current_buf = false;
 		switch(Discharge_sacn_cnt){
@@ -69,6 +70,7 @@ static void Led_sacn(void)
 	}else{//system.Charge_For_Discharge == Charge_State
 		Discharge_sacn_cnt= false;
 		battery.Discharge_Batter_Low_blink = false;
+			
 		LED1=true;
 		LED2=true;
 		LED3=true;
@@ -80,6 +82,7 @@ static void Led_sacn(void)
 			case 4: if(battery.Charge_Current_buf >= 4)	{LED1=true;		LED2=false;	LED3=true;	}Charge_sacn_cnt=false;			break;
 			default: break;
 		}
+
 		if(battery.Battery_State == Battery_Charge){
 			switch(battery.Current_Display){
 				case Quantity_Electricity_5:
@@ -106,6 +109,7 @@ static void Led_sacn(void)
 					battery.Charge_Current_buf -= 1;
 				}
 			}
+
 		}else{
 			battery.Charge_Current_buf = 5;
 			Charge_blink_static = false;

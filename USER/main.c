@@ -66,9 +66,11 @@ static void System_Variable_Init(void)
 	battery.Charge_Current_warning = false;
 	battery.Battery_Full_Accumulative = false;
 	battery.Battery_warning_blink_time = false;
-
-	battery.Batter_Low_cnt = false;
 	
+//	battery.Current_Display = false;
+	battery.Batter_Low_Pressure = Batter_Normal;
+	system.NotifyLight_EN = false;
+	battery.Batter_Low_Filtration = false;
 }
 /**
   * @brief  SClK_Initial() => 初始化系统时钟，系统时钟 = 16MHZ
@@ -180,9 +182,11 @@ static void Sleep_task(void)
 		}
 		System_Initial();
 		qc_detection.QC_Gather_finish = false;
-		if(battery.Battery_warning == NORMAL){
-			system.NotifyLight_EN = true;
-		}
+//		if(battery.Battery_warning == NORMAL){
+//			system.NotifyLight_EN = true;
+//		}
+		adc.Flay_Adc_gather = true;
+		battery.Battery_Level_Update = true;
 	}
 }
 /**
@@ -193,7 +197,6 @@ static void Sleep_task(void)
 void main(void)
 {
 	System_Initial();
-	battery.Current_Display = 6;
 	adc.Flay_Adc_gather = true;
 	battery.Battery_warning = false;
 	delay_ms(150);

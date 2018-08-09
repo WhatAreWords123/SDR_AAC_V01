@@ -192,6 +192,15 @@ void Port_monitoring(void)
 		}else{
 			battery.Battery_State = Battery_Charge;
 		}
+#if 0
+		if(qc_detection.Mode == Speed_mode){
+			system.LED_Temporary_Init = LED4_OUT;
+			LED4_Init_Judge();
+		}else{//qc_detection.Mode == low_speed_mode
+			system.LED_Temporary_Init = LED4_INPUT;
+			LED4_Init_Judge();
+		}
+#endif
 	}else{//system.Charge_For_Discharge == Discharge_State
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
@@ -302,8 +311,7 @@ void Battery_Volume(void)
 								battery.Battery_energy_buf = Quantity_Electricity_5;
 								if(battery.Battery_voltage < Battery_Level_0){
 									if(system.Charge_For_Discharge == Discharge_State)
-										if(++battery.Batter_Low_cnt >= 20000){
-											battery.Batter_Low_cnt = false;
+											if(battery.Batter_Low_Filtration == true){
 											battery.Batter_Low_Pressure = Batter_Low;
 											system.System_State = System_Sleep;
 										}
@@ -315,11 +323,12 @@ void Battery_Volume(void)
 			if(battery.Battery_energy_buf	<= battery.Current_Display){
 				battery.Current_Display = battery.Battery_energy_buf;
 				system.NotifyLight_EN = true;
-				battery.Batter_Low_cnt = false;
+				battery.Batter_Low_Filtration = true;
 			}
 		}
 		else if(system.Charge_For_Discharge == Charge_State){
-			battery.Batter_Low_cnt = false;
+			battery.Batter_Low_Filtration = true;
+			battery.Batter_Low_Pressure = Batter_Normal;
 			if(battery.Battery_voltage >= Battery_charge_Level_4)
 				battery.Battery_energy_buf = Quantity_Electricity_100;
 			else{
