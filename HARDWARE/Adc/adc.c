@@ -207,7 +207,7 @@ void Speed_mode_Current_monitoring(void)
 void low_speed_mode_Current_monitoring(void)
 {
 	LED4 = false;
-	if(a_detection.ADC_A1_AD_Voltage > A2_overcurrent){
+	if(a_detection.ADC_A1_AD_Voltage > A1_overcurrent_low_speed){
 		//A1过流事件
 		if(++a_detection.A1_overcurrent_cnt >= 20){
 			a_detection.A1_overcurrent_cnt = false;
