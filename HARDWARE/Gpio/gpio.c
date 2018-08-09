@@ -77,5 +77,5 @@ void LED4_Out_Init(void)
 	PC_CR1 |= 0x40;
 	PC_CR2 |= 0x40;
 
-	LED4 = true;
+	LED4 = false;
 }
