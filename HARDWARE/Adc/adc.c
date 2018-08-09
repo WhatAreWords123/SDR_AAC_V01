@@ -362,7 +362,7 @@ void Charge_Curves(void)
 			}
 		}
 	}
-	if(battery.Battery_energy_buf >= battery.Current_Display){
+	if(battery.Battery_energy_buf > battery.Current_Display){
 		battery.Current_Display = battery.Battery_energy_buf;
 		system.NotifyLight_EN = true;
 	}
@@ -384,9 +384,9 @@ void Battery_Volume(void)
 			Discharge_Curves();
 		}
 		else if(system.Charge_For_Discharge == Charge_State){
+			Charge_Curves();
 			battery.Batter_Low_Filtration = true;
 			battery.Batter_Low_Pressure = Batter_Normal;
-			Charge_Curves();
 		}else{
 			battery.Battery_warning = WARNING;
 			system.NotifyLight_EN = false;

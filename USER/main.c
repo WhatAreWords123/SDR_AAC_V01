@@ -67,7 +67,6 @@ static void System_Variable_Init(void)
 	battery.Battery_Full_Accumulative = false;
 	battery.Battery_warning_blink_time = false;
 	
-//	battery.Current_Display = false;
 	battery.Batter_Low_Pressure = Batter_Normal;
 	system.NotifyLight_EN = false;
 	battery.Batter_Low_Filtration = false;
@@ -160,7 +159,9 @@ static void Sleep_task(void)
 	LED4 = false;
 	SEL = false;
 	A_EN = false;
+#if WWDG_ENABLE
 	WWDG_SetCounter();
+#endif
 	if(system.Hardware_Sleep == true){
 		ADC_OFF_CMD();
 		Tim2_DeInit();
@@ -171,7 +172,9 @@ static void Sleep_task(void)
 		}
 		TYPE_C_Interrupt_Enable();
 		asm("rim");                                     //开全局中断 
+#if WWDG_ENABLE
 		System_WWDG_Disable(COUNTER_INIT,WINDOW_VALUE);
+#endif
 	  ClockConfig_OFF();                              //关闭所有外设时钟  
 	  asm("halt");                                    //进入停机模式
 	  ClockConfig_ON();
@@ -187,6 +190,7 @@ static void Sleep_task(void)
 //		}
 		adc.Flay_Adc_gather = true;
 		battery.Battery_Level_Update = true;
+		system.NotifyLight_EN = true;
 	}
 }
 /**
@@ -200,7 +204,9 @@ void main(void)
 	adc.Flay_Adc_gather = true;
 	battery.Battery_warning = false;
 	delay_ms(150);
+#if WWDG_ENABLE
 	System_WWDG_Init(COUNTER_INIT,WINDOW_VALUE);
+#endif
 	battery.Current_Display = Quantity_Electricity_100;
 	battery.Battery_Level_Update = true;
 	asm("rim");                                 //开全局中断 
@@ -214,7 +220,9 @@ void main(void)
 			Battery_Volume();
 			Port_monitoring();
 			}
+#if WWDG_ENABLE
 			WWDG_SetCounter();
+#endif
 		}else{//system.System_State == System_Sleep
 			Sleep_task();
 		}
