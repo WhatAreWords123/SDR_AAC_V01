@@ -183,8 +183,7 @@ void A2_sleep_filter(void)
   */
 void Speed_mode_Current_monitoring(void)
 {
-	system.LED_Temporary_Init = LED4_OUT;
-	LED4_Init_Judge();
+	LED4 = true;
 	if(a_detection.ADC_A1_AD_Voltage > A1_overcurrent){
 		//A1过流事件
 		if(++a_detection.A1_overcurrent_cnt >= 20){
@@ -207,8 +206,7 @@ void Speed_mode_Current_monitoring(void)
   */
 void low_speed_mode_Current_monitoring(void)
 {
-	system.LED_Temporary_Init = LED4_INPUT;
-	LED4_Init_Judge();
+	LED4 = false;
 	if(a_detection.ADC_A1_AD_Voltage > A2_overcurrent){
 		//A1过流事件
 		if(++a_detection.A1_overcurrent_cnt >= 20){
@@ -229,6 +227,19 @@ void low_speed_mode_Current_monitoring(void)
   * @param  None
   * @retval None
   */
+void PD_led_show(void)
+{
+	if(qc_detection.Mode == Speed_mode){
+		LED4 = true;
+	}else{//qc_detection.Mode == low_speed_mode
+		LED4 = false;
+	}
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 void Port_monitoring(void)
 {
 	if(system.Charge_For_Discharge == Charge_State){
@@ -240,15 +251,7 @@ void Port_monitoring(void)
 		}else{
 			battery.Battery_State = Battery_Charge;
 		}
-#if 0
-		if(qc_detection.Mode == Speed_mode){
-			system.LED_Temporary_Init = LED4_OUT;
-			LED4_Init_Judge();
-		}else{//qc_detection.Mode == low_speed_mode
-			system.LED_Temporary_Init = LED4_INPUT;
-			LED4_Init_Judge();
-		}
-#endif
+		PD_led_show();
 	}else{//system.Charge_For_Discharge == Discharge_State
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
@@ -269,9 +272,7 @@ void Port_monitoring(void)
 			Speed_mode_Current_monitoring();
 		}else{//qc_detection.Mode == low_speed_mode
 			low_speed_mode_Current_monitoring();
-
 		}
-
 		if(type_c.ADC_TYPE_C_Voltage > TYPE_C_overcurrent){
 			if(++type_c.C_overcurrent_cnt >= 20){
 				type_c.C_overcurrent_cnt = false;

@@ -55,7 +55,7 @@ typedef unsigned long     uint32_t;
 #define ADC_Over                    0x80                  //ADC×ª»»½áÊø
 
 #define BATTER_WARNING							1
-#define WWDG_ENABLE									1
+#define WWDG_ENABLE									0
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
 #define SLEEP_TIME																					30000							//15000	* 1ms = 15S
@@ -68,9 +68,6 @@ typedef unsigned long     uint32_t;
 
 #define WARNING																							true
 #define NORMAL																							false
-
-#define LED4_OUT																						1
-#define LED4_INPUT																					2
 
 #define System_Sleep                                        false
 #define System_Run                                          true
@@ -118,7 +115,7 @@ typedef unsigned long     uint32_t;
 #define TYPE_C_SLEEP																				(uint16_t)0x05					//0.025V
 #define TYPE_C_load																					(uint16_t)0x0A					//0.05V
 #define TYPE_C_overcurrent																	(uint16_t)0xD7					//1.05V
-#define A_SLEEP																							(uint16_t)0x09					//0.045V
+#define A_SLEEP																							(uint16_t)0x08					//0.040V
 #define A_load																							(uint16_t)0x04					//0.100V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V
 #define A2_overcurrent																			(uint16_t)0xDD					//1.08V
@@ -140,9 +137,6 @@ typedef struct{
 	uint8_t Charge_For_Discharge;
 	uint8_t System_sleep_countdown;
 	uint16_t System_sleep_countdown_cnt;
-
-	uint8_t LED_Temporary_Init;
-	uint8_t LED_Temporary_Init_buf;
 }_System;
 
 typedef struct{

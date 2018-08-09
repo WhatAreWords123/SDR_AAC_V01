@@ -38,9 +38,9 @@ void GPIO_Init(void)
 	PC_CR1 |= 0xC0;
 	PC_CR2 |= 0xC0;
 
-  PD_DDR |= 0x10;
-	PD_CR1 |= 0x10;
-	PD_CR2 |= 0x10;
+  PD_DDR |= 0x12;
+	PD_CR1 |= 0x12;
+	PD_CR2 |= 0x12;
 
 	PA_DDR &= ~0x08;
 	PA_CR1 |= 0x08;
@@ -55,7 +55,7 @@ void GPIO_Init(void)
 	PC_CR2 &= ~0x20;
 
 	
-	LED4_Input_Init();
+	LED4_Out_Init();
 	CE = false;
 
 	LED1 = false;
@@ -73,37 +73,9 @@ void GPIO_Init(void)
   */
 void LED4_Out_Init(void)
 {
-  PD_DDR |= 0x02;                    //PD1_Out
-	PD_CR1 |= 0x02;
-	PD_CR2 |= 0x02;
+  PC_DDR |= 0x40;                    //PC6_Out
+	PC_CR1 |= 0x40;
+	PC_CR2 |= 0x40;
 
 	LED4 = true;
-}
-/**
-  * @brief  LED4_Out_Init
-  * @param  None
-  * @retval None
-  */
-void LED4_Input_Init(void)
-{
-	LED4 = false;
-  PD_DDR &= ~0x02;                   //PD1_Input
-	PD_CR1 |= 0x02;
-	PD_CR2 &= ~0x02;
-}
-/**
-  * @brief  LED4_Init_Judge
-  * @param  None
-  * @retval None
-  */
-void LED4_Init_Judge(void)
-{
-	if(system.LED_Temporary_Init_buf != system.LED_Temporary_Init){
-		system.LED_Temporary_Init_buf = system.LED_Temporary_Init;
-		if(system.LED_Temporary_Init_buf == LED4_OUT){
-			LED4_Out_Init();
-		}else{
-			LED4_Input_Init();
-		}
-	}
 }

@@ -4,6 +4,4 @@
 
 void GPIO_Init(void);
 void LED4_Out_Init(void);
-void LED4_Input_Init(void);
-void LED4_Init_Judge(void);
 #endif

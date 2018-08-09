@@ -26,8 +26,6 @@ static void System_Variable_Init(void)
 	key.Forced_shutdown = false;
 
 	system.System_sleep_countdown = false;
-	system.LED_Temporary_Init = false;
-	system.LED_Temporary_Init_buf = false;
 
 	system.Hardware_Sleep = false;
 	system.Hardware_Sleep_dowm_cnt = false;
@@ -185,9 +183,6 @@ static void Sleep_task(void)
 		}
 		System_Initial();
 		qc_detection.QC_Gather_finish = false;
-//		if(battery.Battery_warning == NORMAL){
-//			system.NotifyLight_EN = true;
-//		}
 		adc.Flay_Adc_gather = true;
 		battery.Battery_Level_Update = true;
 		system.NotifyLight_EN = true;
