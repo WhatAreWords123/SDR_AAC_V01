@@ -143,6 +143,11 @@ void Blink_warning(void)
 		}
 	}
 }
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 void TEST(void)
 {
 	static uint8_t Discharge_sacn_cnt = false;
@@ -153,6 +158,21 @@ void TEST(void)
 		case 2: if(battery.Current_Display >= Quantity_Electricity_75)	{LED1=false;	LED2=true;	LED3=false;	}Discharge_sacn_cnt++;		break;
 		case 3: if(battery.Current_Display >= Quantity_Electricity_100)	{LED1=true;		LED2=false;	LED3=true;	}Discharge_sacn_cnt=false;break;
 		default: break;
+	}
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void A_out_off_countdown(void)
+{
+	if((a_detection.A_load_status == A_NO_LOAD_STATUS)&&(a_detection.A_out_status == true)){
+		if(++a_detection.A_out_disable_countdown_cnt >= 30000){
+			a_detection.A_out_disable_countdown_cnt = false;
+			a_detection.A_out_status = false;
+			A_EN = false;
+		}
 	}
 }
 /**
@@ -178,6 +198,8 @@ __interrupt void Time2_OVR_IRQHandler(void)
 		if(battery.Battery_warning == WARNING){
 			Blink_warning();
 		}
+
+		A_out_off_countdown();
 		
 	  if(!adc.Flay_Adc_gather){
 		  if(++adc.Adc_gather_cnt >= ADC_GATHER_TIME){

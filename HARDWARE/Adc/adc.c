@@ -240,6 +240,37 @@ void PD_led_show(void)
   * @param  None
   * @retval None
   */
+void Charge_mode_restriction(void)
+{
+	if(battery.Current_Display >= Quantity_Electricity_50){
+		A_EN = true;
+	}else if(battery.Current_Display < Quantity_Electricity_5){
+		A_EN = false;
+	}
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void A_load_monitoring(void)
+{
+	if(a_detection.A_out_status == true){
+		if(((type_c.ADC_TYPE_C_Voltage > (TYPE_C_SLEEP + (uint16_t)0x05))||(STAT2 != false))
+			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)&&(system.Charge_For_Discharge == Discharge_State)){
+			a_detection.A_load_status = A_NO_LOAD_STATUS;
+		}else if((a_detection.ADC_A1_AD_Voltage > (A_SLEEP + (uint16_t)0x05))&&(a_detection.ADC_A2_AD_Voltage < (A_SLEEP + (uint16_t)0x05))){
+			a_detection.A_load_status = A_LOAD_STATUS;
+			a_detection.A_out_disable_countdown_cnt = false;
+			A_EN = false;
+		}
+	}
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 void Port_monitoring(void)
 {
 	if(system.Charge_For_Discharge == Charge_State){
@@ -252,6 +283,7 @@ void Port_monitoring(void)
 			battery.Battery_State = Battery_Charge;
 		}
 		PD_led_show();
+		Charge_mode_restriction();
 	}else{//system.Charge_For_Discharge == Discharge_State
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
@@ -266,6 +298,7 @@ void Port_monitoring(void)
 			}else{
 				system.System_sleep_countdown = false;
 				system.System_sleep_countdown_cnt = false;
+				A_load_monitoring();
 			}
 		}
 		if(qc_detection.Mode == Speed_mode){

@@ -68,6 +68,10 @@ static void System_Variable_Init(void)
 	battery.Batter_Low_Pressure = Batter_Normal;
 	system.NotifyLight_EN = false;
 	battery.Batter_Low_Filtration = false;
+
+	a_detection.A_load_status = false;
+	a_detection.A_out_status = true;
+	a_detection.A_out_disable_countdown_cnt = false;
 }
 /**
   * @brief  SClK_Initial() => 初始化系统时钟，系统时钟 = 16MHZ

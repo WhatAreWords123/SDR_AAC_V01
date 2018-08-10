@@ -55,7 +55,7 @@ typedef unsigned long     uint32_t;
 #define ADC_Over                    0x80                  //ADC转换结束
 
 #define BATTER_WARNING							1
-#define WWDG_ENABLE									0
+#define WWDG_ENABLE									1
 
 #define ADC_GATHER_TIME																			50								//50 * 1ms = 50ms
 #define SLEEP_TIME																					30000							//15000	* 1ms = 15S
@@ -71,6 +71,9 @@ typedef unsigned long     uint32_t;
 
 #define System_Sleep                                        false
 #define System_Run                                          true
+
+#define A_NO_LOAD_STATUS																		1
+#define A_LOAD_STATUS																				2
 
 #define ADC_VB                    													0x06                  //ADC6通道
 #define ADC_QC																							0x02									//ADC2通道
@@ -176,12 +179,15 @@ typedef struct{
 }_Qc_Detection;
 
 typedef struct{
+	uint8_t A_out_status;
+	uint8_t A_load_status;
 	uint8_t A1_Sleep_flay;
 	uint8_t A2_Sleep_flay;
 	uint8_t A1_overcurrent_cnt;
 	uint8_t A2_overcurrent_cnt;
 	uint8_t ADC_A1_Gather_finish;
 	uint8_t ADC_A2_Gather_finish;
+	uint16_t A_out_disable_countdown_cnt;
 	uint16_t A1_No_load_cnt;
 	uint16_t A1_Load_cnt;
 	uint16_t A2_No_load_cnt;

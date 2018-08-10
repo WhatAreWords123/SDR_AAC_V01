@@ -70,7 +70,6 @@ uint8_t key_read(void)
 }
 void Key_event(void)
 {
-	
 	if(key.time_10ms_ok){  	//time_10ms_ok = 1，表示计时到了10MS。（10MS扫描一次按键）
 		key.time_10ms_ok = 0; //清除计时10MS标志
 		key.key = key_read(); //调用扫描按键程序，返回一个键值
@@ -80,7 +79,8 @@ void Key_event(void)
 				system.System_State = System_Sleep;
 			}
 		}else if(key.key == D_key){
-		}else if(key.key == S_key){ 
+		}else if(key.key == S_key){
+			a_detection.A_out_status = true;
 		}		
 	}
 }
