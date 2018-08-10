@@ -284,6 +284,9 @@ void Port_monitoring(void)
 		}
 		PD_led_show();
 		Charge_mode_restriction();
+		type_c.C_overcurrent_cnt = false;
+		a_detection.A1_overcurrent_cnt = false;
+		a_detection.A2_overcurrent_cnt = false;
 	}else{//system.Charge_For_Discharge == Discharge_State
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){

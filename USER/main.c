@@ -58,7 +58,8 @@ static void System_Variable_Init(void)
 	type_c.ADC_TYPE_C_Voltage = false;
 	
 	qc_detection.QC_Gather_finish = false;
-
+	qc_detection.Mode = low_speed_mode;
+	
 	battery.warning_temp = false;
 	battery.Lndicator_light_cnt = false;
 	battery.Charge_Current_warning = false;
@@ -186,7 +187,6 @@ static void Sleep_task(void)
 			}
 		}
 		System_Initial();
-		qc_detection.QC_Gather_finish = false;
 		adc.Flay_Adc_gather = true;
 		battery.Battery_Level_Update = true;
 		system.NotifyLight_EN = true;
