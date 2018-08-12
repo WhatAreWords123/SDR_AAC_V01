@@ -259,10 +259,10 @@ void A_load_monitoring(void)
 		if(((type_c.ADC_TYPE_C_Voltage > (TYPE_C_SLEEP + (uint16_t)0x05))||(STAT2 != false))
 			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)&&(system.Charge_For_Discharge == Discharge_State)){
 			a_detection.A_load_status = A_NO_LOAD_STATUS;
-		}else if((a_detection.ADC_A1_AD_Voltage > (A_SLEEP + (uint16_t)0x05))&&(a_detection.ADC_A2_AD_Voltage < (A_SLEEP + (uint16_t)0x05))){
+		}else if((a_detection.ADC_A1_AD_Voltage > (A_SLEEP + (uint16_t)0x05))||(a_detection.ADC_A2_AD_Voltage > (A_SLEEP + (uint16_t)0x05))){
 			a_detection.A_load_status = A_LOAD_STATUS;
 			a_detection.A_out_disable_countdown_cnt = false;
-			A_EN = false;
+			A_EN = true;
 		}
 	}
 }
