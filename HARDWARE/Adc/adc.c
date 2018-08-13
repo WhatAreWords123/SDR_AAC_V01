@@ -102,22 +102,17 @@ static void Fast_slow_charge_discharge_judge(void)
 void TYPE_C_sleep_filter(void)
 {
 	if(type_c.ADC_TYPE_C_Voltage > TYPE_C_SLEEP){
-		type_c.Load_cnt++;
+		type_c.No_load_cnt--;
 	}
-#if 0
-	if(type_c.ADC_TYPE_C_Voltage < TYPE_C_SLEEP){
-#else
 	else{
-#endif
 		type_c.No_load_cnt++;	
 	}
-	if(type_c.No_load_cnt >= 500){
+	if(type_c.No_load_cnt >= 100){
 		type_c.Sleep_flay = true;
+		type_c.No_load_cnt = 50;
+	}else if(type_c.No_load_cnt < 0){
 		type_c.No_load_cnt = false;
-	}
-	if(type_c.Load_cnt >= 200){
 		type_c.Sleep_flay = false;
-		type_c.Load_cnt = false;
 	}
 }
 /**
@@ -128,23 +123,16 @@ void TYPE_C_sleep_filter(void)
 void A1_sleep_filter(void)
 {
 	if(a_detection.ADC_A1_AD_Voltage > A_load){
-		a_detection.A1_Load_cnt++;
+		a_detection.A1_No_load_cnt--;
 	}
-#if 0
-	if(a_detection.ADC_A1_AD_Voltage < A_SLEEP){
-#else
 	else{
-#endif
 		a_detection.A1_No_load_cnt++;
 	}
-
-	if(a_detection.A1_No_load_cnt >= 500){
+	if(a_detection.A1_No_load_cnt >= 100){
 		a_detection.A1_Sleep_flay = true;
-		a_detection.A1_No_load_cnt = false;
-	}
-	if(a_detection.A1_Load_cnt >= 200){
+		a_detection.A1_No_load_cnt = 50;
+	}else if(a_detection.A1_No_load_cnt < 0){
 		a_detection.A1_Sleep_flay = false;
-		a_detection.A1_Load_cnt = false;
 		a_detection.A1_No_load_cnt = false;
 	}
 }
@@ -155,25 +143,18 @@ void A1_sleep_filter(void)
   */
 void A2_sleep_filter(void)
 {
-
 	if(a_detection.ADC_A2_AD_Voltage > A_load){
-		a_detection.A2_Load_cnt++;
+		a_detection.A2_No_load_cnt--;
 	}
-#if 0
-	else if(a_detection.ADC_A2_AD_Voltage < A_SLEEP){
-#else
 	else{
-#endif
 		a_detection.A2_No_load_cnt++;	
 	}
-	
-	if(a_detection.A2_No_load_cnt >= 200){
+	if(a_detection.A2_No_load_cnt >= 100){
 		a_detection.A2_Sleep_flay = true;
+		a_detection.A2_No_load_cnt = 50;
+	}else if(a_detection.A2_No_load_cnt < 0){
 		a_detection.A2_No_load_cnt = false;
-	}
-	if(a_detection.A2_Load_cnt >= 500){
 		a_detection.A2_Sleep_flay = false;
-		a_detection.A2_Load_cnt = false;
 	}
 }
 /**
@@ -256,10 +237,15 @@ void Charge_mode_restriction(void)
 void A_load_monitoring(void)
 {
 	if(a_detection.A_out_status == true){
-		if(((type_c.ADC_TYPE_C_Voltage > (TYPE_C_SLEEP + (uint16_t)0x05))||(STAT2 != false))
-			&&(a_detection.ADC_A1_AD_Voltage < A_SLEEP)&&(a_detection.ADC_A2_AD_Voltage < A_SLEEP)&&(system.Charge_For_Discharge == Discharge_State)){
+#if 0
+		if(((type_c.Sleep_flay == false)||(STAT2 != true))
+			&&(a_detection.A1_Sleep_flay == true)&&(a_detection.A2_Sleep_flay == true)&&(system.Charge_For_Discharge == Discharge_State)){
 			a_detection.A_load_status = A_NO_LOAD_STATUS;
-		}else if((a_detection.ADC_A1_AD_Voltage > (A_SLEEP + (uint16_t)0x05))||(a_detection.ADC_A2_AD_Voltage > (A_SLEEP + (uint16_t)0x05))){
+#else
+		if((a_detection.A1_Sleep_flay == true)&&(a_detection.A2_Sleep_flay == true)){
+			a_detection.A_load_status = A_NO_LOAD_STATUS;
+#endif
+		}else{
 			a_detection.A_load_status = A_LOAD_STATUS;
 			a_detection.A_out_disable_countdown_cnt = false;
 			A_EN = true;
@@ -283,14 +269,15 @@ void Port_monitoring(void)
 			battery.Battery_State = Battery_Charge;
 		}
 		PD_led_show();
-		Charge_mode_restriction();
+		A_load_monitoring();
+//		Charge_mode_restriction();
 		type_c.C_overcurrent_cnt = false;
 		a_detection.A1_overcurrent_cnt = false;
 		a_detection.A2_overcurrent_cnt = false;
 	}else{//system.Charge_For_Discharge == Discharge_State
 		if((qc_detection.QC_Gather_finish==true)&&(a_detection.ADC_A1_Gather_finish==true)
 			&&(a_detection.ADC_A2_Gather_finish==true)){
-#if 0
+#if 1
 		if(((type_c.Sleep_flay == true)||(STAT2 != true))
 			&&(a_detection.A1_Sleep_flay == true)&&(a_detection.A2_Sleep_flay == true)&&(system.Charge_For_Discharge == Discharge_State)){
 #else

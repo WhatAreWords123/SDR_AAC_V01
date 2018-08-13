@@ -168,7 +168,7 @@ void TEST(void)
 void A_out_off_countdown(void)
 {
 	if((a_detection.A_load_status == A_NO_LOAD_STATUS)&&(a_detection.A_out_status == true)){
-		if(++a_detection.A_out_disable_countdown_cnt >= 30000){
+		if(++a_detection.A_out_disable_countdown_cnt >= 21000){
 			a_detection.A_out_disable_countdown_cnt = false;
 			a_detection.A_out_status = false;
 			A_EN = false;
@@ -234,7 +234,7 @@ __interrupt void Time2_OVR_IRQHandler(void)
 		key.time_10ms_ok = true;
 		}
 	}else{
-		if(++system.Hardware_Sleep_dowm_cnt >= 1000){
+		if(++system.Hardware_Sleep_dowm_cnt >= 1500){
 			system.Hardware_Sleep_dowm_cnt = false;
 			system.Hardware_Sleep = true;
 		}
