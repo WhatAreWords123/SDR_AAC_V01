@@ -42,7 +42,8 @@ static void System_Variable_Init(void)
 	a_detection.A1_No_load_cnt = false;
 	a_detection.A1_Load_cnt = false;
 	a_detection.A1_Sleep_flay = false;
-
+	a_detection.A1_AD_Compensate = false;
+	
 	a_detection.A2_Load_cnt = false;
 	a_detection.A2_Sleep_flay = false;
 	a_detection.A2_No_load_cnt = false;

@@ -119,7 +119,7 @@ typedef unsigned long     uint32_t;
 #define TYPE_C_load																					(uint16_t)0x0A					//0.05V
 #define TYPE_C_overcurrent																	(uint16_t)0xD7					//1.05V
 #define A_SLEEP																							(uint16_t)0x08					//0.040V
-#define A_load																							(uint16_t)0x09					//0.045V
+#define A_load																							(uint16_t)0x06					//0.030V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V
 #define A2_overcurrent																			(uint16_t)0xDD					//1.08V
 #define A1_overcurrent_low_speed														(uint16_t)0x10E					//1.32V
@@ -193,6 +193,7 @@ typedef struct{
 	int16_t A2_No_load_cnt;
 	uint16_t A2_Load_cnt;
 	uint16_t ADC_A1_AD_Voltage;
+	uint16_t A1_AD_Compensate;
 	uint16_t ADC_A2_AD_Voltage;
 }_A_Detection;
 
