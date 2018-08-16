@@ -154,6 +154,17 @@ static void System_Initial(void)
   * @param  None
   * @retval None
   */
+void GPIO_INIT(void)
+{
+  PA_DDR &= ~0x02;
+	PA_CR1 &= ~0x02;
+	PA_CR2 &= ~0x02;
+}
+/**
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 static void Sleep_task(void)
 {
 	CE = true;
@@ -171,6 +182,7 @@ static void Sleep_task(void)
 		Tim2_DeInit();
 		SLEEP:
 		asm("sim");                                     //关闭全局中断
+		GPIO_INIT();
 		if(battery.Batter_Low_Pressure != Batter_Low){
 			Key_Interrupt_Enable();
 		}
