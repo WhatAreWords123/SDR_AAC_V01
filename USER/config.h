@@ -118,7 +118,7 @@ typedef unsigned long     uint32_t;
 #define MAX_VOLTAGE																					(uint16_t)0x25C					//2.950V
 #define TYPE_C_SLEEP																				(uint16_t)0x05					//0.025V
 #define TYPE_C_load																					(uint16_t)0x0A					//0.05V
-#define TYPE_C_overcurrent																	(uint16_t)0xD7					//1.05V
+#define TYPE_C_overcurrent																	(uint16_t)0x114					//1.35V
 #define A_SLEEP																							(uint16_t)0x08					//0.040V
 #define A_load																							(uint16_t)0x06					//0.030V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V

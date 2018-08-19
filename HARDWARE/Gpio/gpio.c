@@ -62,7 +62,7 @@ void GPIO_Init(void)
 	LED2 = false;
 	LED3 = false;
 
-	SEL = true;
+	SEL = false;
 	A_EN = true;
 	
 }

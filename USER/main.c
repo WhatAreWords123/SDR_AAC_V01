@@ -129,9 +129,16 @@ static void Charge_For_Discharge_Detection(void)
 {
 	if((C_DIR == false) && (STAT2 == true)){
 		SEL = false;
+		CE = false;
 		system.Charge_For_Discharge = Charge_State;
 	}else{
-		SEL = true;
+		if(STAT2 == false){
+			SEL = true;
+			CE = true;
+		}else{
+			SEL = false;
+			CE = false;	
+		}
 		system.Charge_For_Discharge = Discharge_State;
 	}
 }

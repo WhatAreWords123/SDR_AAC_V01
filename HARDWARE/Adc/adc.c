@@ -172,16 +172,16 @@ void A2_sleep_filter(void)
 void Speed_mode_Current_monitoring(void)
 {
 	LED4 = true;
-	if(a_detection.ADC_A1_AD_Voltage > A1_overcurrent){
+	if(a_detection.ADC_A1_AD_Voltage >= A1_overcurrent){
 		//A1过流事件
-		if(++a_detection.A1_overcurrent_cnt >= 20){
+		if(++a_detection.A1_overcurrent_cnt >= 5){
 			a_detection.A1_overcurrent_cnt = false;
 			system.System_State = System_Sleep;
 		}
 	}
-	if(a_detection.ADC_A2_AD_Voltage > A2_overcurrent){
+	if(a_detection.ADC_A2_AD_Voltage >= A2_overcurrent){
 		//A2过流事件
-		if(++a_detection.A2_overcurrent_cnt >= 20){
+		if(++a_detection.A2_overcurrent_cnt >= 5){
 			a_detection.A2_overcurrent_cnt = false;
 			system.System_State = System_Sleep;
 		}
@@ -195,16 +195,16 @@ void Speed_mode_Current_monitoring(void)
 void low_speed_mode_Current_monitoring(void)
 {
 	LED4 = false;
-	if(a_detection.ADC_A1_AD_Voltage > A1_overcurrent_low_speed){
+	if(a_detection.ADC_A1_AD_Voltage >= A1_overcurrent_low_speed){
 		//A1过流事件
-		if(++a_detection.A1_overcurrent_cnt >= 20){
+		if(++a_detection.A1_overcurrent_cnt >= 5){
 			a_detection.A1_overcurrent_cnt = false;
 			system.System_State = System_Sleep;
 		}
 	}
-	if(a_detection.ADC_A2_AD_Voltage > A2_overcurrent){
+	if(a_detection.ADC_A2_AD_Voltage >= A2_overcurrent){
 		//A2过流事件
-		if(++a_detection.A2_overcurrent_cnt >= 20){
+		if(++a_detection.A2_overcurrent_cnt >= 5){
 			a_detection.A2_overcurrent_cnt = false;
 			system.System_State = System_Sleep;
 		}
