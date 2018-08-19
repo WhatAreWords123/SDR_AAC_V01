@@ -88,7 +88,7 @@ typedef unsigned long     uint32_t;
 #define Battery_Level_3                                     (uint16_t)0x228          //2.700V
 #define Battery_Level_4                                     (uint16_t)0x24D          //2.880V
 #else
-#define Battery_Level_0                                     (uint16_t)0x1C2          //2.200V
+#define Battery_Level_0                                     (uint16_t)0x1AE          //2.100V  8.7V
 #define Battery_Level_1																			(uint16_t)0x1E1          //2.350V
 #define Battery_Level_2                                     (uint16_t)0x1FD          //2.475V
 #define Battery_Level_3                                     (uint16_t)0x21A          //2.700V
@@ -118,12 +118,12 @@ typedef unsigned long     uint32_t;
 #define MAX_VOLTAGE																					(uint16_t)0x25C					//2.950V
 #define TYPE_C_SLEEP																				(uint16_t)0x05					//0.025V
 #define TYPE_C_load																					(uint16_t)0x0A					//0.05V
-#define TYPE_C_overcurrent																	(uint16_t)0x114					//1.35V
+#define TYPE_C_overcurrent																	(uint16_t)0xE1					//1.10V  3.3A
 #define A_SLEEP																							(uint16_t)0x08					//0.040V
 #define A_load																							(uint16_t)0x06					//0.030V
 #define A1_overcurrent																			(uint16_t)0xB4					//0.88V
-#define A2_overcurrent																			(uint16_t)0xDD					//1.08V
-#define A1_overcurrent_low_speed														(uint16_t)0x10E					//1.32V
+#define A2_overcurrent																			(uint16_t)0xD9					//1.06V  2.65A
+#define A1_overcurrent_low_speed														(uint16_t)0x10A					//1.30V  3.25A
 
 
 #define Speed_mode																					true
@@ -200,6 +200,7 @@ typedef struct{
 
 typedef struct{
 	uint8_t Sleep_flay;
+	uint8_t Power_up_abandon;
 	uint8_t C_overcurrent_cnt;
 	int16_t No_load_cnt;
 	uint16_t Load_cnt;

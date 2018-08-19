@@ -306,7 +306,12 @@ void Port_monitoring(void)
 		if(type_c.ADC_TYPE_C_Voltage > TYPE_C_overcurrent){
 			if(++type_c.C_overcurrent_cnt >= 20){
 				type_c.C_overcurrent_cnt = false;
-				system.System_State = System_Sleep;
+				if(type_c.Power_up_abandon == false){
+					system.System_State = System_Sleep;
+				}else{
+					type_c.Power_up_abandon = false;
+					type_c.ADC_TYPE_C_Voltage = false;
+				}
 			}
 		}
 	}

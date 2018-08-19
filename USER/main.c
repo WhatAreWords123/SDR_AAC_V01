@@ -222,6 +222,7 @@ void main(void)
 	System_Initial();
 	adc.Flay_Adc_gather = true;
 	battery.Battery_warning = false;
+	type_c.Power_up_abandon = true;
 	delay_ms(150);
 #if WWDG_ENABLE
 	System_WWDG_Init(COUNTER_INIT,WINDOW_VALUE);
