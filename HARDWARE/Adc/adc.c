@@ -122,11 +122,13 @@ void TYPE_C_sleep_filter(void)
   */
 void A1_sleep_filter(void)
 {
+#if _A_QC_COMPENSATE
 	if(qc_detection.Mode == Speed_mode){
 		a_detection.A1_AD_Compensate = 0x02;
 	}else{
 		a_detection.A1_AD_Compensate = false;
 	}
+#endif
 	if((a_detection.ADC_A1_AD_Voltage + a_detection.A1_AD_Compensate)  > A_load){
 		a_detection.A1_No_load_cnt--;
 	}

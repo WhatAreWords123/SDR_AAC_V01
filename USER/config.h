@@ -56,6 +56,7 @@ typedef unsigned long     uint32_t;
 
 #define BATTER_WARNING							1
 #define WWDG_ENABLE									1
+#define _A_QC_COMPENSATE						0
 
 #define ADC_GATHER_TIME																			10								//10 * 1ms = 10ms
 #define SLEEP_TIME																					26000							//15000	* 1ms = 15S
