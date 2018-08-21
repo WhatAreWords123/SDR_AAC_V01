@@ -90,13 +90,13 @@ typedef unsigned long     uint32_t;
 #else
 #define Battery_Level_0                                     (uint16_t)0x1AE          //2.100V  8.7V
 #define Battery_Level_1																			(uint16_t)0x1E1          //2.350V
-#define Battery_Level_2                                     (uint16_t)0x1FD          //2.475V
-#define Battery_Level_3                                     (uint16_t)0x21A          //2.700V
-#define Battery_Level_4                                     (uint16_t)0x239          //2.880V
+#define Battery_Level_2                                     (uint16_t)0x214          //2.600V
+#define Battery_Level_3                                     (uint16_t)0x233          //2.750V
+#define Battery_Level_4                                     (uint16_t)0x251          //2.900V
 #endif
-#define Battery_charge_Level_4															(uint16_t)0x270          //3.050V
-#define Battery_charge_Level_3															(uint16_t)0x259          //2.935V
-#define Battery_charge_Level_2															(uint16_t)0x23D          //2.80V
+#define Battery_charge_Level_4															(uint16_t)0x25C          //2.950V
+#define Battery_charge_Level_3															(uint16_t)0x244          //2.835V
+#define Battery_charge_Level_2															(uint16_t)0x228          //2.70V
 #define Battery_charge_Level_1															(uint16_t)0x1CC          //2.250V
 
 #define Battery_abnormal																		(uint16_t)0x28F          //3.20V
