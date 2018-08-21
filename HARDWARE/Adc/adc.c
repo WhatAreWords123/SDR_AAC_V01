@@ -368,11 +368,11 @@ void Discharge_Curves(void)
 			}
 		}
 	}
-	if(battery.Battery_energy_buf	<= battery.Current_Display){
+	if(battery.Battery_energy_buf	< battery.Current_Display){
 		battery.Current_Display = battery.Battery_energy_buf;
-		system.NotifyLight_EN = true;
-		battery.Batter_Low_Filtration = true;
 	}
+	battery.Batter_Low_Filtration = true;
+	system.NotifyLight_EN = true;
 }
 /**
   * @brief  None
@@ -398,10 +398,10 @@ void Charge_Curves(void)
 			}
 		}
 	}
-	if(battery.Battery_energy_buf > battery.Current_Display){
+	if(battery.Battery_energy_buf >= battery.Current_Display){
 		battery.Current_Display = battery.Battery_energy_buf;
-		system.NotifyLight_EN = true;
 	}
+	system.NotifyLight_EN = true;
 }
 /**
   * @brief  None
