@@ -116,9 +116,18 @@ static void Key_Interrupt_Enable(void)
 }
 static void TYPE_C_Interrupt_Enable(void)
 {
+#if 1
 	PC_DDR &= ~0x20;
+	PC_CR1 &= ~0x20;
 	PC_CR2 |= 0x20;
-	EXTI_CR1 |= 0x10;	
+	EXTI_CR1 |= 0x10;
+#else
+	PC_DDR |= 0x20;
+	PC_CR1 |= 0x20;
+	PC_CR2 |= 0x20;	
+
+	STAT2_OUT = false;
+#endif
 }
 /**
   * @brief  None
@@ -166,6 +175,20 @@ void GPIO_INIT(void)
   PA_DDR &= ~0x02;
 	PA_CR1 &= ~0x02;
 	PA_CR2 &= ~0x02;
+
+  PD_DDR |= 0x6C;
+	PD_CR1 |= 0x6C;
+	PD_CR2 |= 0x6C;
+
+  PC_DDR |= 0x10;
+	PC_CR1 |= 0x10;
+	PC_CR2 |= 0x10;
+
+	QC_OUT = false;
+	A_AD2_OUT = false;
+	A_AD1_OUT = false;
+	C_AD_OUT = false;
+	VB_OUT = false;
 }
 /**
   * @brief  None

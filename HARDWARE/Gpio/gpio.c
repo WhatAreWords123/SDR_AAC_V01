@@ -48,12 +48,19 @@ void GPIO_Init(void)
 
 	PB_CR1 |= 0x10;
 
-	PC_CR1 |= 0x08;
+	PC_CR1 |= 0x28;
 	
 	PC_DDR &= ~0x20;
 	PC_CR1 |= 0x20;
 	PC_CR2 &= ~0x20;
 
+  PD_DDR &= ~0x6C;
+	PD_CR1 &= ~0x6C;
+	PD_CR2 &= ~0x6C;
+
+  PC_DDR &= ~0x10;
+	PC_CR1 &= ~0x10;
+	PC_CR2 &= ~0x10;
 	
 	LED4_Out_Init();
 	CE = false;

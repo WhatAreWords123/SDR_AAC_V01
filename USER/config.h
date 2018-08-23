@@ -52,6 +52,13 @@ typedef unsigned long     uint32_t;
 #define CE													PB_ODR_ODR5
 #define KEY													PA_IDR_IDR3
 
+#define QC_OUT											PC_ODR_ODR4
+#define STAT2_OUT										PC_ODR_ODR5
+#define A_AD2_OUT										PD_ODR_ODR2
+#define A_AD1_OUT										PD_ODR_ODR3
+#define C_AD_OUT										PD_ODR_ODR5
+#define VB_OUT											PD_ODR_ODR6
+
 #define ADC_Over                    0x80                  //ADC×ª»»½áÊø
 
 #define BATTER_WARNING							1
