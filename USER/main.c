@@ -184,6 +184,12 @@ void GPIO_INIT(void)
 	PC_CR1 |= 0x10;
 	PC_CR2 |= 0x10;
 
+	PC_DDR |= 0x20;
+	PC_CR1 |= 0x20;
+	PC_CR2 |= 0x20;	
+
+	STAT2_OUT = false;
+
 	QC_OUT = false;
 	A_AD2_OUT = false;
 	A_AD1_OUT = false;
